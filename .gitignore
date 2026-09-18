@@ -44,3 +44,10 @@ Thumbs.db
 # Vercel/Netlify build output
 .vercel/
 .netlify/
+
+# Private Pitch Deck, Business Plan & Visual Assets (Do not commit to public Git)
+docs/*.pptx
+docs/*.docx
+docs/assets/
+scripts/build_pitch_deck.py
+scripts/build_business_plan.py

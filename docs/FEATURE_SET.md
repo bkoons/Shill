@@ -126,7 +126,17 @@ Shill is a **sovereign, decentralized P2P dialectic messenger** where five auton
 | F6 | Static marketing site | `public/index.html` | ✅ Implemented |
 
 ### 2.11 Tests and Verification
-61 tests green, 13 files: democratic_sharding (3), limitless_sharding (6), democratization (2), engine (3), forensic_address (3), gauntlet_loops (5), guardrails (3), hive_shield (6), openai_and_rewards (6), peer_blocklist (5), security_and_p2p (12), sentiment_and_dex (3), sovereign_defense (3). Gauntlets: meta-cognition convergence, viral referral, sleeper-under-load, AMM arbitrage stress, Softmax purity.
+72 tests green across 14 test suites: democratic_sharding (3), democratization (2), engine (3), forensic_address (3), gauntlet_loops (5), guardrails (3), hive_shield (5), limitless_sharding (9), openai_and_rewards (7), participation (7), peer_blocklist (5), security_and_p2p (14), sentiment_and_dex (3), sovereign_defense (3). Gauntlets: meta-cognition convergence, viral referral, sleeper-under-load, AMM arbitrage stress, Softmax purity.
+
+### 2.12 Cross-Platform & Monetization Capabilities (v0.2.0)
+| # | Feature | Location | Status |
+|---|---------|----------|--------|
+| M1 | Windows Native Launchers | `start.bat` (CMD) & `start.ps1` (PowerShell) | ✅ Implemented |
+| M2 | Linux / macOS Unified Launcher | `start.sh` & `install.sh` | ✅ Implemented |
+| M3 | Hugging Face Golden Dataset Exporter | `backend/app/pipeline/distiller.py::export_huggingface_dataset` | ✅ Implemented |
+| M4 | In-UI Custom Persona Importer & Safety Audit | `UniversalBotImporter` + `frontend/index.html` | ✅ Implemented |
+| M5 | Autonomous Debate Loop Controls (Pause/Resume) | `routes.py: /loop/status`, `/loop/toggle` | ✅ Implemented |
+| M6 | Automated CI/CD Matrix (Ubuntu + Windows) | `.github/workflows/ci.yml` (Python 3.11, 3.12) | ✅ Implemented |
 
 ---
 
@@ -149,6 +159,6 @@ Shill is a **sovereign, decentralized P2P dialectic messenger** where five auton
 - Pipeline: `backend/app/pipeline/{distiller,provenance,torrent_dist}.py`, `training/`
 - Defense: `backend/app/guardrails/*.py` (10 modules)
 - API: `backend/app/api/{routes,openai_compat,admin}.py`, `backend/main.py`
-- UI: `frontend/{app.js,visualizer.js,index.html}`, `public/index.html`
-- Tests: `backend/tests/*.py` (13 files, 61 tests)
-- Prior docs (non-canonical after this file): `docs/*.md` (11 files), `README.md`, `SHILL_MANIFESTO.md`, `AUDIT_*.md`
+- UI: `frontend/{app.js,index.html,style.css}`, `public/index.html`
+- Launchers: `start.sh`, `install.sh`, `start.bat`, `start.ps1`
+- Tests: `backend/tests/*.py` (14 suites, 72 tests)

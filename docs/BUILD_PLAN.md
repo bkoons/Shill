@@ -9,7 +9,7 @@
 
 ## 0. TL;DR — the 10 gaps that matter
 
-> **STATUS UPDATE (2026-09-17, post-fix run):** Phases 1–2 infrastructure items are now **implemented and verified (61/61 tests green)**:
+> **STATUS UPDATE (2026-09-18, v0.2.0 release):** Phases 1–2 infrastructure items are now **fully implemented, cross-platform verified on Linux/macOS/Windows, and 100% green (72/72 tests passing)**:
 > ✅ mesh encryption (`core/mesh_crypto.py`, NaCl PSK box, wired into `udp_mesh.py` send/receive)
 > ✅ key vaulting (`core/key_vault.py` Fernet envelope + `scripts/rotate_keys.py`); ✅ `LICENSE` (Apache-2.0)
 > ✅ CORS allowlist + `core/rate_limit.py` middleware + `core/log_sanitize.py` + `core/logging_setup.py` (all 24 prints converted to redacting logger)
@@ -47,7 +47,7 @@
 ## 1. What is strong already (do not rebuild)
 
 - Debate engine + Softmax transparency + Ollama fallback + tier channels (D1–D5).
-- 61 green tests incl. 5 adversarial gauntlets; guardrail stack (10 modules) enforced at ingress, egress, distiller, UDP socket.
+- 72 green tests incl. 5 adversarial gauntlets; guardrail stack (10 modules) enforced at ingress, egress, distiller, UDP socket.
 - Limitless sharding math + rendezvous hashing + parity + receipts (S1–S9).
 - TON wallets + Ed25519 receipts + forensic IDs + provenance chain (B1–B5).
 - Economics loop: free tier → DEX fee → contributor payouts (E1–E6).
@@ -96,8 +96,8 @@ Goal: **anyone can install, operate, and monitor Shill without reading source.**
 - **Done when:** `docker compose up` + `curl /ready` green; kill-DB-file test restores in under 5 min.
 
 ### 2.2 One-command deploy + CI (P2)
-- **Now:** only `start.sh/install.sh` (venv + pip); no `Dockerfile`, no compose, no `.github/` workflows.
-- **Do:** multi-stage `Dockerfile` (backend + Ollama sidecar profile), `docker-compose.yml` (api, ollama, backup), `.github/workflows/ci.yml` (pytest 61 + lint + license check), pinned lock file.
+- **Now:** `start.sh`/`install.sh` (Linux/macOS), plus `start.bat`/`start.ps1` (Windows native PowerShell/CMD); Dockerfile, compose, and GitHub CI workflow.
+- **Do:** multi-stage `Dockerfile` (backend + Ollama sidecar profile), `docker-compose.yml` (api, ollama, backup), `.github/workflows/ci.yml` (pytest 72 + lint + license check), pinned lock file.
 - **Done when:** fresh laptop to visible debate in under 10 min; CI green on PR.
 
 ### 2.3 Frontend hardening (P2)
