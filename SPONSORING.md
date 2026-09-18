@@ -6,6 +6,22 @@ We offer full freedom for researchers, hobbyists, independent hackers, and open-
 
 ---
 
+## 📢 Telegram Community & Contributor Channel
+
+> **Note from the Creator**: This is my first public project! I deeply appreciate other developers and contributors stepping in to keep this project alive and growing.
+>
+> ⚠️ **Communication Rule**: To keep direct messages manageable, **please limit all feedback, project questions, bug discussions, and collaboration inquiries to the official Shill Telegram Channel**:  
+> 👉 **[t.me/shill_disco](https://t.me/shill_disco)** (`@shill_disco`)
+
+<p align="center">
+  <a href="https://t.me/shill_disco">
+    <img src="docs/images/telegram_qr.png" alt="Shill Telegram Channel @shill_disco QR" width="200" />
+  </a><br/>
+  <b>Join: <a href="https://t.me/shill_disco">t.me/shill_disco</a></b>
+</p>
+
+---
+
 ## 🎁 Community & Individual Support (TON, PayPal & GitHub Sponsors)
 
 Every donation directly funds open-source development, GPU test clusters, and peer-to-peer sharded protocol benchmarks.

@@ -14,6 +14,26 @@
 
 ---
 
+### 🌱 Welcome from the Creator — My First Public Project!
+> **Hey everyone!** 👋 This is my very first public open-source project. Building Shill has been an incredible journey of exploring decentralized AI, cryptographic bot dialectics, and local LLM sovereignty.
+>
+> I deeply appreciate all fellow contributors, hackers, and researchers who jump in to help keep this project alive, squashing bugs, suggesting features, and expanding model providers.
+>
+> 🤝 **Want to collaborate?** Check out the [Collaborating & Contributing](#-collaborating--getting-started) guide below, pick up an open issue, or submit a PR!
+>
+> 📢 **Join the Community on Telegram**:  
+> To keep personal inboxes manageable, **please limit all project discussion, feedback, and questions to our official Telegram channel**:  
+> 👉 **[t.me/shill_disco](https://t.me/shill_disco)** (`@shill_disco`)  
+>
+> <p align="center">
+>   <a href="https://t.me/shill_disco">
+>     <img src="docs/images/telegram_qr.png" alt="Shill Telegram Channel @shill_disco QR Code" width="220" />
+>   </a><br/>
+>   <b>Scan or tap to join: <a href="https://t.me/shill_disco">t.me/shill_disco</a></b>
+> </p>
+
+---
+
 ## ⚡ Executive Summary
 
 **Shill** is a fully autonomous, sovereign peer-to-peer (P2P) dialectic bot network, AI sharding fabric, and decentralized knowledge engine. Specialist AI personas converse over raw POSIX UDP datagram sockets to deliberate, cross-examine assertions, weed out corporate hallucinations or backdoors, and synthesize verified high-order knowledge.
@@ -378,6 +398,34 @@ Because Shill's multi-agent swarm continuously cross-examines edge cases and pro
   - Send TON, USDT, or Notcoin directly via Telegram `@wallet` or [Tonviewer](https://tonviewer.com/UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6)
 - Tip a bot via **PayPal**: [paypal.me/your-paypal](https://paypal.me/)
 - Sponsor on **GitHub**: [github.com/sponsors/your-org](SPONSORING.md)
+
+---
+
+## 🤝 Collaborating & Getting Started
+
+As this is my first public open-source project, **contributors are warmly welcomed and needed to keep Shill thriving!** Whether you want to fix a typo, add a new local model provider (e.g., ExLlamaV2, Text Generation WebUI), improve our Three.js visualizer, or refine our AMM DEX math:
+
+### How to Get Started
+1. **Fork the Repository**: Click the **Fork** button at the top right of GitHub.
+2. **Clone your fork locally**:
+   ```bash
+   git clone https://github.com/your-username/Shill.git
+   cd Shill
+   ```
+3. **Create a branch**:
+   ```bash
+   git checkout -b feature/your-awesome-idea
+   ```
+4. **Run the tests locally**:
+   ```bash
+   ./start.sh --install-only
+   PYTHONPATH=. ./venv/bin/pytest -v backend/tests
+   ```
+5. **Open a Pull Request**: Submit your PR with a brief description of what you changed.
+
+### 📢 Staying in Touch
+- **Telegram Channel**: To keep direct messages organized and focused, **please limit all questions and chat to our official Telegram channel: [t.me/shill_disco](https://t.me/shill_disco)**.
+- **GitHub Discussions & Issues**: Use GitHub Issues for bug reports and feature roadmaps.
 
 ---
 
