@@ -3,5 +3,6 @@
   "framework": null,
   "buildCommand": "cp -r frontend/* . && cp -r public/* . 2>/dev/null || true",
   "outputDirectory": ".",
+  "installCommand": "echo 'Static deployment - no install needed'",
   "cleanUrls": true
 }
