@@ -86,12 +86,15 @@ let isDemoMode = false;
 // This avoids cross-origin issues and stale config when the backend serves the frontend directly
 (function() {
   const currentOrigin = window.location.origin;
+  // Match any localhost/127.0.0.1 on common dev ports, plus same-origin heuristic
+  const isLocalhostOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(currentOrigin);
   const knownBackendOrigins = ["http://localhost:8000", "http://127.0.0.1:8000"];
-  if (knownBackendOrigins.includes(currentOrigin) && customNodeUrl) {
+  if ((knownBackendOrigins.includes(currentOrigin) || isLocalhostOrigin) && customNodeUrl) {
     console.log("[Shill] Clearing customNodeUrl (served from backend origin, using same-origin API)");
     localStorage.removeItem("shill_custom_node_url");
     customNodeUrl = "";
   }
+  console.log("[Shill] Origin:", currentOrigin, "| customNodeUrl:", customNodeUrl || "(empty, using same-origin)");
 })();
 
 // Background retry state for auto-recovery
@@ -305,7 +308,9 @@ function switchUserMode(mode) {
 
 async function fetchChannels(retryCount = 20, baseDelay = 1500) {
   try {
-    const res = await fetch(apiUrl('/api/channels'));
+    const targetUrl = apiUrl('/api/channels');
+    console.log("[Shill] fetchChannels →", targetUrl);
+    const res = await fetch(targetUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     channels = await res.json();
     setDemoMode(false);
