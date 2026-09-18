@@ -25,10 +25,22 @@ training/*.gguf
 training/*.bin
 training/*.safetensors
 
-# Environment secrets
+# Environment secrets & Credentials
 .env
 .env.*
 *.env
+*.key
+*.pem
+*.cert
+*.crt
+*.pfx
+*.p12
+id_rsa
+id_ed25519
+id_ecdsa
+*secret*
+*credential*
+
 
 # Editor
 .vscode/

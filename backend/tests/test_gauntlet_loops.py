@@ -215,3 +215,36 @@ def test_verbalized_softmax_candidate_distribution_purity():
             assert "text" in cand
             assert cand["probability"] > 0.0
             assert cand["confidence_pct"].endswith("%")
+
+def test_security_git_sanitization_and_secret_leak_gauntlet():
+    """
+    Gauntlet Loop 6: Security & Git Leakage Audit
+    Verifies that:
+    1. No sensitive files (.env, .pem, .key, id_rsa, db) are tracked in Git.
+    2. API wallet endpoints strictly redact private keys and seed phrases.
+    3. The security gauntlet scanner verifies zero unredacted high-entropy secrets in the repo.
+    """
+    import subprocess
+    import sys
+    from backend.app.core.rewards import get_bot_wallet_detail, get_reward_leaderboard
+
+    # 1. Test that wallet detail redacts sensitive fields
+    for p_id in ("solon", "athena", "kael"):
+        detail = get_bot_wallet_detail(p_id)
+        if detail:
+            assert "private_key_hex" not in detail
+            assert "seed_phrase" not in detail
+            assert "wallet_address" in detail
+            assert detail["wallet_address"].startswith("EQ")
+
+    # 2. Test that leaderboard never includes private keys
+    leaderboard = get_reward_leaderboard()
+    for entry in leaderboard:
+        assert "private_key_hex" not in entry
+        assert "seed_phrase" not in entry
+
+    # 3. Execute the security gauntlet scanner script
+    res = subprocess.run([sys.executable, "scripts/security_gauntlet.py"], capture_output=True, text=True)
+    assert res.returncode == 0, f"Security gauntlet failed:\n{res.stdout}\n{res.stderr}"
+    assert "GAUNTLET PASSED" in res.stdout
+
