@@ -5,14 +5,14 @@
   "outputDirectory": "api",
   "cleanUrls": true,
   "functions": {
-    "api/index.py": {
+    "api/main.py": {
       "maxDuration": 30
     }
   },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.py"
+      "dest": "/main.py"
     }
   ]
 }
