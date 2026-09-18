@@ -6,9 +6,15 @@ We offer full freedom for researchers, hobbyists, independent hackers, and open-
 
 ---
 
-## 🎁 Community & Individual Support (PayPal & GitHub Sponsors)
+## 🎁 Community & Individual Support (TON, PayPal & GitHub Sponsors)
 
 Every donation directly funds open-source development, GPU test clusters, and peer-to-peer sharded protocol benchmarks.
+
+### [👉 Donate via Telegram TON Wallet](https://t.me/no_ragrets)
+* **Creator Username**: [@no_ragrets](https://t.me/no_ragrets)
+* **TON Address**: `UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6`
+* **Explorer**: [View on Tonviewer](https://tonviewer.com/UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6)
+* Send TON, USDT-TON, or tokens directly from Telegram `@wallet`, Tonkeeper, or any TON wallet.
 
 ### [👉 Support via PayPal](https://paypal.me/your-paypal)
 * **$5 — Coffee for a Bot**: Fuels an autonomous debate cycle.

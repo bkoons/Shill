@@ -6,6 +6,7 @@
 [![Cryptographic Wallets: TON v4r2](https://img.shields.io/badge/blockchain-TON%20v4r2-0098ea.svg)](#cryptographic-ton-v4r2-wallets)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 [![Tests: 72 Passed](https://img.shields.io/badge/gauntlet%20tests-72%20passed-10b981.svg)](#testing--verification)
+[![TON Wallet: Telegram](https://img.shields.io/badge/TON%20Wallet-%40no__ragrets-0098ea.svg)](https://t.me/no_ragrets)
 [![Sponsor: PayPal](https://img.shields.io/badge/Sponsor-PayPal-00457c.svg)](https://paypal.me/)
 [![Sponsor: GitHub](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ea4aaa.svg)](SPONSORING.md)
 
@@ -42,29 +43,29 @@ Shill is engineered to be delightfully intuitive for first-time users while prov
 
 ```mermaid
 graph TD
-    User([Citizen / User]) -->|HTTP / WebSocket / Chat| UI[Web Interface :8000]
-    UI -->|REST /api/channels| AppServer[FastAPI Gateway]
-    AppServer --> Router[Dialogue Generator & Turn Manager]
+    User["Citizen / User"] -->|HTTP / WebSocket / Chat| UI["Web Interface :8000"]
+    UI -->|REST /api/channels| AppServer["FastAPI Gateway"]
+    AppServer --> Router["Dialogue Generator & Turn Manager"]
     
-    subgraph "Real POSIX UDP Mesh (:9999)"
-        UDP[UDP Datagram Socket 0.0.0.0:9999]
-        PeerA[Peer Node A] <-->|Broadcast & Gossip| UDP
-        PeerB[Peer Node B] <-->|Pipeline Activations| UDP
+    subgraph Mesh ["Real POSIX UDP Mesh (:9999)"]
+        UDP["UDP Datagram Socket 0.0.0.0:9999"]
+        PeerA["Peer Node A"] <-->|Broadcast & Gossip| UDP
+        PeerB["Peer Node B"] <-->|Pipeline Activations| UDP
     end
 
     Router <-->|Datagrams| UDP
-    Router --> Shield{Hardened Hive Shield}
-    Shield -->|Corporate Poison / Backdoor| Slashing[Byzantine Peer Slashing Chamber]
-    Shield -->|Clean & Verified| Dialectic[Dialectic Verification Engine]
+    Router --> Shield{"Hardened Hive Shield"}
+    Shield -->|Corporate Poison / Backdoor| Slashing["Byzantine Peer Slashing Chamber"]
+    Shield -->|Clean & Verified| Dialectic["Dialectic Verification Engine"]
     
-    Dialectic --> Ephemeral[Ephemeral Chat Buffer (TTL 60m)]
-    Dialectic --> Distill[Permanent Knowledge Distillation]
-    Distill --> SFT[SFT / DPO Datasets & GGUF Export]
+    Dialectic --> Ephemeral["Ephemeral Chat Buffer (TTL 60m)"]
+    Dialectic --> Distill["Permanent Knowledge Distillation"]
+    Distill --> SFT["SFT / DPO Datasets & GGUF Export"]
 
-    subgraph "Sovereign Economics & Cryptography"
-        Wallets[Ed25519 TON v4r2 Wallets]
-        Forensics[0x... Forensic On-Chain Badges]
-        AMM[Constant-Product AMM DEX (TON/COMPUTE/KNOW)]
+    subgraph Econ ["Sovereign Economics & Cryptography"]
+        Wallets["Ed25519 TON v4r2 Wallets"]
+        Forensics["0x... Forensic On-Chain Badges"]
+        AMM["Constant-Product AMM DEX (TON/COMPUTE/KNOW)"]
     end
 
     Router --> Wallets
@@ -372,6 +373,9 @@ Because Shill's multi-agent swarm continuously cross-examines edge cases and pro
 - **Enterprise OEM & Private Deployments**: For closed-source commercial applications, proprietary Slack/Jira/GitLab enterprise bot swarms, or guaranteed SLAs, commercial licenses are available. See [SPONSORING.md](SPONSORING.md).
 
 ### 3. Community Donations & Sponsoring
+- **Telegram TON Wallet (@no_ragrets)**: `UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6`
+  - Direct Telegram Link: [@no_ragrets](https://t.me/no_ragrets)
+  - Send TON, USDT, or Notcoin directly via Telegram `@wallet` or [Tonviewer](https://tonviewer.com/UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6)
 - Tip a bot via **PayPal**: [paypal.me/your-paypal](https://paypal.me/)
 - Sponsor on **GitHub**: [github.com/sponsors/your-org](SPONSORING.md)
 
