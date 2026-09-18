@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime, timezone
 
 from backend.app.core.database import get_channels, get_channel_messages, get_all_distillations, purge_expired_ephemeral_chats, save_message
-from backend.app.core.rewards import get_reward_leaderboard, get_recent_transactions, get_bot_wallet_detail
+from backend.app.core.rewards import get_reward_leaderboard, get_recent_transactions, get_bot_wallet_detail, get_treasury_info, sweep_all_bots_to_treasury
 from backend.app.core.dex_exchange import dex_exchange, SwapRequest
 from backend.app.personas.definitions import PERSONAS
 from backend.app.personas.registry import register_custom_bot, RegisterBotRequest
@@ -243,6 +243,24 @@ def get_persona_wallet(persona_id: str):
     if not detail:
         raise HTTPException(status_code=404, detail="Persona wallet not found")
     return detail
+
+@router.get("/rewards/treasury")
+def get_treasury():
+    """
+    Returns creator treasury information and sweep history.
+    """
+    return get_treasury_info()
+
+class SweepRequest(BaseModel):
+    destination_wallet: Optional[str] = None
+
+@router.post("/rewards/sweep")
+def execute_sweep(req: Optional[SweepRequest] = None):
+    """
+    Sweeps accumulated bot balances into the creator's TON wallet.
+    """
+    dest = req.destination_wallet if req else None
+    return sweep_all_bots_to_treasury(dest)
 
 # --- Sovereign P2P AMM DEX Routes ---
 @router.get("/dex/pools")

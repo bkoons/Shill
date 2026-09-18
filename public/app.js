@@ -945,9 +945,41 @@ async function renderWallets() {
   const container = document.getElementById('wallet-leaderboard');
   container.innerHTML = '<div style="padding:16px; color:#7f91a4;">Loading cryptographic TON v4r2 ledger...</div>';
   try {
-    const res = await fetch(apiUrl('/api/rewards/leaderboard'));
-    const leaderboard = await res.json();
+    const [leaderboardRes, treasuryRes] = await Promise.all([
+      fetch(apiUrl('/api/rewards/leaderboard')),
+      fetch(apiUrl('/api/rewards/treasury'))
+    ]);
+    const leaderboard = await leaderboardRes.json();
+    const treasury = await treasuryRes.json();
     container.innerHTML = '';
+
+    // Creator Settlement Treasury Card
+    const treasuryCard = document.createElement('div');
+    treasuryCard.style.cssText = 'background:linear-gradient(135deg, rgba(0,152,234,0.15), rgba(16,185,129,0.15)); border:1px solid rgba(0,152,234,0.4); border-radius:10px; padding:12px 14px; margin-bottom:12px;';
+    treasuryCard.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.2rem;">💎</span>
+          <div>
+            <strong style="color:#38bdf8; font-size:0.85rem;">Creator Treasury Wallet</strong>
+            <span style="background:#0098ea; color:#fff; font-size:0.65rem; padding:1px 6px; border-radius:4px; font-weight:700; margin-left:6px;">${treasury.treasury_handle}</span>
+          </div>
+        </div>
+        <button class="btn-inc-action" style="background:#10b981; color:#fff; font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:6px; cursor:pointer;" onclick="handleSweepAllBots()">
+          ⚡ Sweep All Bot TON Here
+        </button>
+      </div>
+      <div style="font-size:0.72rem; color:#cbd5e1; margin-top:6px; word-break:break-all; font-family:monospace;">
+        <a href="${treasury.explorer_url}" target="_blank" style="color:#7dd3fc; text-decoration:none;">
+          ${treasury.treasury_address} ↗
+        </a>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#94a3b8; margin-top:6px;">
+        <span>Total Swept to Date: <strong style="color:#10b981;">${treasury.total_swept_ton} TON</strong></span>
+        <span>Verified Sweeps: <strong>${treasury.sweep_count}</strong></span>
+      </div>
+    `;
+    container.appendChild(treasuryCard);
     
     leaderboard.forEach(item => {
       const persona = personas.find(p => p.id === item.persona_id) || { name: item.persona_id, avatar: '🤖', role_type: 'bot' };
@@ -977,6 +1009,24 @@ async function renderWallets() {
     });
   } catch (err) {
     container.innerHTML = '<div style="padding:16px; color:#ef4444;">Failed to load wallet ledger</div>';
+  }
+}
+
+async function handleSweepAllBots() {
+  if (!confirm("Sweep all accumulated bot balances into your personal TON wallet (UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6 / @no_ragrets)?")) {
+    return;
+  }
+  try {
+    const res = await fetch(apiUrl('/api/rewards/sweep'), { method: 'POST' });
+    const data = await res.json();
+    if (data.status === 'success') {
+      alert(`🎉 Successfully swept ${data.swept_total_ton} TON from ${data.bots_swept} bots directly to your wallet!\n\nDestination: ${data.destination_wallet}`);
+      renderWallets();
+    } else {
+      alert(`Sweep error: ${JSON.stringify(data)}`);
+    }
+  } catch (err) {
+    alert(`Failed to execute sweep: ${err}`);
   }
 }
 

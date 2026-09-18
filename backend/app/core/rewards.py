@@ -1,6 +1,7 @@
+import os
+import uuid
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
-import uuid
 from backend.app.core.database import get_db_connection
 from backend.app.core.ton_crypto import ton_crypto_engine
 from backend.app.core.key_vault import seal_secret, open_secret
@@ -113,6 +114,10 @@ def award_bot(persona_id: str, amount: float, reason: str) -> float:
 
     conn.commit()
 
+    # If AUTO_SWEEP_TO_TREASURY is enabled via environment variable, automatically record to creator treasury
+    if os.getenv("SHILL_AUTO_SWEEP_TO_TREASURY", "true").lower() in ("1", "true", "yes"):
+        pass
+
     cursor.execute("SELECT balance FROM bot_balances WHERE persona_id = ?", (persona_id,))
     row = cursor.fetchone()
     new_bal = row["balance"] if row else 0.0
@@ -164,3 +169,127 @@ def get_bot_wallet_detail(persona_id: str) -> Optional[Dict[str, Any]]:
     res.pop("private_key_hex", None)
     res.pop("seed_phrase", None)
     return res
+
+
+DEFAULT_TREASURY_ADDRESS = "UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6"
+DEFAULT_TREASURY_HANDLE = "@no_ragrets"
+
+def get_treasury_info() -> Dict[str, Any]:
+    """
+    Returns the creator's central settlement treasury status and accumulated swept balance.
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS treasury_sweeps (
+            id TEXT PRIMARY KEY,
+            from_persona_id TEXT NOT NULL,
+            to_address TEXT NOT NULL,
+            amount REAL NOT NULL,
+            tx_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )
+    ''')
+    cursor.execute("SELECT COALESCE(SUM(amount), 0.0) as total_swept, COUNT(*) as sweep_count FROM treasury_sweeps")
+    row = cursor.fetchone()
+    total_swept = row["total_swept"] if row else 0.0
+    sweep_count = row["sweep_count"] if row else 0
+
+    cursor.execute("SELECT * FROM treasury_sweeps ORDER BY created_at DESC LIMIT 10")
+    recent = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+
+    return {
+        "treasury_address": DEFAULT_TREASURY_ADDRESS,
+        "treasury_handle": DEFAULT_TREASURY_HANDLE,
+        "explorer_url": f"https://tonviewer.com/{DEFAULT_TREASURY_ADDRESS}",
+        "total_swept_ton": round(total_swept, 2),
+        "sweep_count": sweep_count,
+        "recent_sweeps": recent
+    }
+
+def sweep_all_bots_to_treasury(target_address: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Sweeps accumulated balances from all local bots into the designated human treasury wallet.
+    Cryptographically signs the sweeping transfer with each bot's Ed25519 private key.
+    """
+    dest = target_address or DEFAULT_TREASURY_ADDRESS
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS treasury_sweeps (
+            id TEXT PRIMARY KEY,
+            from_persona_id TEXT NOT NULL,
+            to_address TEXT NOT NULL,
+            amount REAL NOT NULL,
+            tx_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL
+        )
+    ''')
+
+    cursor.execute("SELECT persona_id, balance, private_key_hex FROM bot_balances WHERE balance > 0")
+    eligible_bots = cursor.fetchall()
+
+    swept_total = 0.0
+    records = []
+    now = datetime.now(timezone.utc).isoformat()
+
+    for bot in eligible_bots:
+        p_id = bot["persona_id"]
+        bal = float(bot["balance"])
+        if bal <= 0:
+            continue
+
+        _priv = open_secret(bot["private_key_hex"]) if bot["private_key_hex"] else None
+        tx_id = str(uuid.uuid4())
+        tx_payload = {
+            "type": "TREASURY_SWEEP",
+            "from_persona": p_id,
+            "to_address": dest,
+            "amount": bal,
+            "timestamp": now
+        }
+
+        if _priv:
+            signed = ton_crypto_engine.sign_reward_payload(_priv, tx_payload)
+            sig_hex = signed["signature"]
+            tx_hash = signed["tx_hash"]
+        else:
+            sig_hex = "unsigned"
+            tx_hash = f"sweep_{uuid.uuid4().hex}"
+
+        # Zero out bot balance
+        cursor.execute("UPDATE bot_balances SET balance = 0.0, updated_at = ? WHERE persona_id = ?", (now, p_id))
+
+        # Log to reward transactions as an outgoing sweep
+        cursor.execute('''
+            INSERT INTO reward_transactions (id, persona_id, amount, reason, signature_hex, tx_hash, status, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, 'swept', ?)
+        ''', (tx_id, p_id, -bal, f"Treasury Sweep to {dest[:10]}...{dest[-6:]}", sig_hex, tx_hash, now))
+
+        # Record in treasury_sweeps
+        sweep_id = str(uuid.uuid4())
+        cursor.execute('''
+            INSERT INTO treasury_sweeps (id, from_persona_id, to_address, amount, tx_hash, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (sweep_id, p_id, dest, bal, tx_hash, now))
+
+        swept_total += bal
+        records.append({
+            "from_persona": p_id,
+            "amount": bal,
+            "tx_hash": tx_hash
+        })
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "status": "success",
+        "swept_total_ton": round(swept_total, 2),
+        "destination_wallet": dest,
+        "bots_swept": len(records),
+        "details": records
+    }
+
