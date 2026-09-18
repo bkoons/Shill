@@ -3,7 +3,7 @@ import hmac
 import time
 import secrets
 import pyotp
-from typing import Dict, Any, Optional
+from typing import Dict, Optional
 from pydantic import BaseModel
 
 # ----------------------------------------------------------------------------

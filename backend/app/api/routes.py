@@ -1,13 +1,12 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, HTTPException, Request
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, HTTPException
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
-import asyncio
 import json
 import uuid
 from datetime import datetime, timezone
 
 from backend.app.core.database import get_channels, get_channel_messages, get_all_distillations, purge_expired_ephemeral_chats, save_message
-from backend.app.core.rewards import get_reward_leaderboard, get_recent_transactions, award_bot, get_bot_wallet_detail
+from backend.app.core.rewards import get_reward_leaderboard, get_recent_transactions, get_bot_wallet_detail
 from backend.app.core.dex_exchange import dex_exchange, SwapRequest
 from backend.app.personas.definitions import PERSONAS
 from backend.app.personas.registry import register_custom_bot, RegisterBotRequest

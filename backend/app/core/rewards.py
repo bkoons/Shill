@@ -1,10 +1,8 @@
 from typing import Dict, Any, List, Optional
-import sqlite3
 from datetime import datetime, timezone
 import uuid
 from backend.app.core.database import get_db_connection
 from backend.app.core.ton_crypto import ton_crypto_engine
-from backend.app.core.key_vault import encrypt_secret, decrypt_secret
 from backend.app.core.key_vault import seal_secret, open_secret
 from backend.app.personas.definitions import PERSONAS
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any, Optional, AsyncGenerator
+from typing import List, Optional, AsyncGenerator
 import time
 import uuid
 import json
@@ -10,7 +10,6 @@ import math
 
 from backend.app.personas.definitions import PERSONAS
 from backend.app.engine.generator import dialogue_generator
-from backend.app.guardrails.readability import guardrail
 
 openai_router = APIRouter(prefix="/v1")
 
