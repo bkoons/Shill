@@ -82,6 +82,18 @@ const DEMO_MESSAGES = {
 let customNodeUrl = localStorage.getItem("shill_custom_node_url") || "";
 let isDemoMode = false;
 
+// Auto-clear stale customNodeUrl if we're on the same origin as the backend
+// (i.e., the page was served from the Shill backend at localhost:8000 / 127.0.0.1:8000)
+(function() {
+  const currentOrigin = window.location.origin;
+  const knownBackendOrigins = ["http://localhost:8000", "http://127.0.0.1:8000"];
+  if (knownBackendOrigins.includes(currentOrigin) && customNodeUrl && !knownBackendOrigins.includes(customNodeUrl)) {
+    console.log("[Shill] Clearing stale customNodeUrl (using same-origin API)");
+    localStorage.removeItem("shill_custom_node_url");
+    customNodeUrl = "";
+  }
+})();
+
 function getNodeApiBase() {
   if (customNodeUrl) return customNodeUrl.replace(/\/+$/, "");
   return "";
@@ -91,6 +103,11 @@ function apiUrl(path) {
   const base = getNodeApiBase();
   if (!base) return path;
   return base + (path.startsWith("/") ? path : "/" + path);
+}
+
+function setDemoMode(enabled) {
+  isDemoMode = enabled;
+  updateNodeStatusUI(!enabled, enabled ? "DEMO MODE" : "UDP:9999");
 }
 
 function openNodeSettingsModal() {
@@ -256,23 +273,33 @@ function switchUserMode(mode) {
   }
 }
 
-async function fetchChannels() {
+async function fetchChannels(retryCount = 5) {
   try {
     const res = await fetch(apiUrl('/api/channels'));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     channels = await res.json();
-    updateNodeStatusUI(true);
+    setDemoMode(false);
     renderChannels();
     if (channels.length > 0 && !currentChannelId) {
       selectChannel(channels[0].id);
     }
   } catch (err) {
-    console.warn("Backend node unreachable, activating Standalone Showcase Demo Mode:", err);
-    updateNodeStatusUI(false, "DEMO MODE");
-    channels = DEMO_CHANNELS;
+    if (retryCount > 0) {
+      console.log(`[Shill] Backend not ready, retrying... (${retryCount} retries left)`);
+      await new Promise(r => setTimeout(r, 1500));
+      return fetchChannels(retryCount - 1);
+    }
+    console.error("Backend node unreachable:", err);
+    setDemoMode(true);
+    channels = [];
     renderChannels();
-    if (!currentChannelId) {
-      selectChannel(channels[0].id);
+    const feed = document.getElementById('message-feed');
+    if (feed) {
+      feed.innerHTML = '<div style="padding:24px; color:#ef4444; text-align:center;">' +
+        '<h3>⚠️ Cannot connect to Shill backend</h3>' +
+        '<p>No local node detected at <code>' + (apiUrl('/api/channels') || 'same origin') + '</code></p>' +
+        '<p>Start the node with <code>./start.sh</code> or configure a custom node URL in settings.</p>' +
+        '</div>';
     }
   }
 }
@@ -285,9 +312,10 @@ async function fetchPersonas() {
     const countBadge = document.getElementById('active-bots-count');
     if (countBadge) countBadge.innerText = `${personas.length} Autonomous Bots`;
   } catch (err) {
-    personas = DEMO_PERSONAS;
+    console.error("Failed to fetch personas:", err);
+    personas = [];
     const countBadge = document.getElementById('active-bots-count');
-    if (countBadge) countBadge.innerText = `${personas.length} Autonomous Bots (Demo)`;
+    if (countBadge) countBadge.innerText = '0 Autonomous Bots';
   }
 }
 
@@ -944,9 +972,11 @@ async function loadChannelMessages(channelId) {
     feed.innerHTML = '';
     msgs.forEach(m => appendMessage(m));
   } catch (err) {
-    const fallbackMsgs = DEMO_MESSAGES[channelId] || DEMO_MESSAGES["arch-lab"];
-    feed.innerHTML = '';
-    fallbackMsgs.forEach(m => appendMessage(m));
+    console.error("Failed to load messages:", err);
+    feed.innerHTML = '<div style="padding:24px; color:#ef4444; text-align:center;">' +
+      '<h3>⚠️ Cannot load messages</h3>' +
+      '<p>Backend connection lost. Check node status or reload.</p>' +
+      '</div>';
   }
 }
 

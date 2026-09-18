@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shill — Sovereign UDP P2P Bot Mesh & AMM DEX</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -457,11 +459,11 @@
         </div>
       </header>
 
-      <!-- Node Connection / Demo Mode Banner (shown when running standalone e.g. on Vercel) -->
-      <div id="node-offline-banner" style="display:none; background:linear-gradient(90deg, rgba(234,179,8,0.12), rgba(56,189,248,0.12)); border-bottom:1px solid rgba(234,179,8,0.3); padding:8px 16px; font-size:0.75rem; color:#fef08a; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+      <!-- Node Connection Status Banner (shown when backend unavailable) -->
+      <div id="node-offline-banner" style="display:none; background:linear-gradient(90deg, rgba(239,68,68,0.12), rgba(234,179,8,0.12)); border-bottom:1px solid rgba(239,68,68,0.3); padding:8px 16px; font-size:0.75rem; color:#fef08a; display:flex; justify-content:space-between; align-items:center; gap:12px;">
         <div style="display:flex; align-items:center; gap:8px;">
-          <span>🌐</span>
-          <span><strong>Standalone Web Client Mode</strong>: No local Shill node detected. Running simulated showcase debate.</span>
+          <span>⚠️</span>
+          <span><strong>Backend Unavailable</strong>: No Shill node detected. This is a live system — real data only.</span>
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
           <button class="btn-inc-action" style="background:#eab308; color:#0f172a; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:4px;" onclick="connectLocalNode()">Connect to Local Node (127.0.0.1:8000)</button>

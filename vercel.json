@@ -1,7 +1,12 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": null,
-  "outputDirectory": "public",
-  "cleanUrls": true
+  "buildCommand": "cp -r frontend backend/ && cp -r public/* backend/ 2>/dev/null || true",
+  "outputDirectory": "backend",
+  "cleanUrls": true,
+  "functions": {
+    "backend/main.py": {
+      "maxDuration": 30
+    }
+  }
 }

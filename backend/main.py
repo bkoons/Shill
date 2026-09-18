@@ -70,9 +70,17 @@ def version():
             "uptime_sec": round(__import__("time").time() - _START_TIME, 1)}
 
 
-frontend_dir = os.path.join(os.path.dirname(__file__), "../frontend")
-if os.path.exists(frontend_dir):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+# Support multiple frontend locations (local dev, Vercel, Docker, etc.)
+_base = os.path.dirname(__file__)
+_candidates = [
+    os.path.join(_base, "../frontend"),      # Local dev: project_root/frontend
+    os.path.join(_base, "frontend"),         # Vercel: outputDirectory/backend/frontend
+    os.path.join(_base, "../public"),        # Local alt: project_root/public
+    os.path.join(_base, "public"),           # Vercel alt: outputDirectory/backend/public
+]
+_frontend_dir = next((p for p in _candidates if os.path.exists(p)), None)
+if _frontend_dir:
+    app.mount("/", StaticFiles(directory=_frontend_dir, html=True), name="frontend")
 
 if __name__ == "__main__":
     import uvicorn
