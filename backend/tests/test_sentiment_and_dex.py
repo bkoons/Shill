@@ -26,6 +26,25 @@ def test_bot_sentiment_and_rest_days():
     assert active_state.is_resting_today is False
     assert active_state.mood == "Inspired"
 
+    # Circadian replenishment & wake all
+    sentiment_engine.toggle_rest_day("solon", True, "Tired")
+    sentiment_engine.toggle_rest_day("athena", True, "Meditation")
+    assert sentiment_engine.get_sentiment("solon").is_resting_today is True
+    assert sentiment_engine.get_sentiment("athena").is_resting_today is True
+
+    sentiment_engine.wake_all()
+    assert sentiment_engine.get_sentiment("solon").is_resting_today is False
+    assert sentiment_engine.get_sentiment("athena").is_resting_today is False
+    assert sentiment_engine.get_sentiment("solon").energy_level >= 0.90
+
+    # Progressive circadian tick test
+    sentiment_engine.toggle_rest_day("solon", True)
+    sentiment_engine.get_sentiment("solon").energy_level = 0.45
+    sentiment_engine.replenish_all(amount=0.10)
+    # Energy becomes 0.55 (> 0.50), waking up automatically
+    assert sentiment_engine.get_sentiment("solon").is_resting_today is False
+    assert sentiment_engine.get_sentiment("solon").mood == "Inspired"
+
 def test_universal_bot_import_and_safety_audit():
     init_db()
     init_rewards_table()

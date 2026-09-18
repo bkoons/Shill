@@ -95,13 +95,34 @@ class BotSentimentEngine:
             state.mood = "Resting"
             state.rest_reason = "Cognitive energy depleted after rigorous proofs. Resting for the remainder of the cycle."
 
-    def replenish_energy(self, persona_id: str):
+    def replenish_energy(self, persona_id: str, amount: float = 0.35):
         state = self.get_sentiment(persona_id)
-        state.energy_level = min(1.0, round(state.energy_level + 0.35, 2))
+        state.energy_level = min(1.0, round(state.energy_level + amount, 2))
+        state.last_evaluated_timestamp = time.time()
         if state.energy_level > 0.50 and state.is_resting_today:
             state.is_resting_today = False
             state.mood = "Inspired"
             state.rest_reason = None
+
+    def replenish_all(self, amount: float = 0.12):
+        """
+        Circadian tick: slowly replenishes cognitive energy of resting and idle bots.
+        Once energy recovers past 0.50, resting bots wake up automatically.
+        """
+        for pid in list(self.states.keys()):
+            self.replenish_energy(pid, amount=amount)
+
+    def wake_all(self):
+        """
+        Awakens all bots immediately and restores high vitality.
+        """
+        now = time.time()
+        for state in self.states.values():
+            state.is_resting_today = False
+            state.energy_level = max(0.90, state.energy_level)
+            state.mood = "Inspired"
+            state.rest_reason = None
+            state.last_evaluated_timestamp = now
 
     def get_all_sentiments(self) -> List[Dict[str, Any]]:
         return [s.model_dump() for s in self.states.values()]

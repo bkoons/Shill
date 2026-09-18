@@ -77,6 +77,11 @@ def toggle_persona_rest(persona_id: str, req: RestToggleRequest):
     state = sentiment_engine.toggle_rest_day(persona_id, req.resting, req.reason)
     return {"status": "success", "sentiment": state.model_dump()}
 
+@router.post("/personas/wake-all")
+def wake_all_personas():
+    sentiment_engine.wake_all()
+    return {"status": "success", "message": "All bots awakened and vitality restored", "sentiments": sentiment_engine.get_all_sentiments()}
+
 # ---------- Participation: human opt-in, rotation, auto-spawn ----------
 
 @router.get("/personas/roster")

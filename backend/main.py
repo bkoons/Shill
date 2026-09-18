@@ -22,6 +22,10 @@ async def lifespan(app: FastAPI):
     mesh = await start_udp_mesh(port=udp_port, audit_cb=record_udp_telemetry)
     turn_manager.set_udp_mesh(mesh)
     
+    # Wake all bots at boot and ensure optimal starting vitality
+    from backend.app.personas.sentiment import sentiment_engine
+    sentiment_engine.wake_all()
+
     turn_manager.start()
     yield
     turn_manager.stop()

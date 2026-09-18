@@ -1469,14 +1469,34 @@ body {
 
 .help-tabs-nav {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   background: #0b121a;
-  padding: 8px 16px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--tg-border);
   overflow-x: auto;
-  scrollbar-width: none;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.4) rgba(15, 23, 42, 0.6);
 }
-.help-tabs-nav::-webkit-scrollbar { display: none; }
+
+.help-tabs-nav::-webkit-scrollbar {
+  height: 5px;
+}
+
+.help-tabs-nav::-webkit-scrollbar-track {
+  background: rgba(11, 18, 26, 0.8);
+}
+
+.help-tabs-nav::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
+}
+
+.help-tabs-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.6);
+}
 
 .help-tab-btn {
   background: transparent;
@@ -1484,10 +1504,11 @@ body {
   color: #94a3b8;
   font-size: 0.78rem;
   font-weight: 700;
-  padding: 6px 14px;
+  padding: 7px 15px;
   border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;

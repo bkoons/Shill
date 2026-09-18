@@ -202,7 +202,15 @@ class TurnManager:
                 "reason": sentiment.rest_reason or "Taking a contemplative rest day."
             }
             await self.broadcast(rest_notice)
-            return None
+
+            # Rotate in an eligible non-resting replacement so dialectics continue smoothly
+            from backend.app.engine.participation import participation_engine
+            replacement = participation_engine.pick_replacement(persona.id)
+            if replacement:
+                persona = replacement
+                sentiment = sentiment_engine.get_sentiment(persona.id)
+            else:
+                return None
 
         await self.broadcast({
             "type": "typing",
@@ -405,6 +413,10 @@ class TurnManager:
                     _log.error("[TurnManager] Error stepping channel: %s", e)
             
             cycle_counter += 1
+            # Circadian cycle: periodically replenish resting & idle bots so they naturally wake up
+            if cycle_counter % 5 == 0:
+                sentiment_engine.replenish_all(amount=0.10)
+
             if cycle_counter % 15 == 0:
                 purged = purge_expired_ephemeral_chats()
                 if purged > 0:
