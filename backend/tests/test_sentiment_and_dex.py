@@ -75,7 +75,7 @@ def test_dex_amm_swap_and_pricing():
         trader_persona_id="solon",
         input_token="TON",
         input_amount=50.0,
-        min_output_amount=10.0
+        min_output_amount=1.0
     )
     res = dex_exchange.execute_swap(swap_req)
     

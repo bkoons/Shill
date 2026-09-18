@@ -1,6 +1,9 @@
 import hashlib
+import json
+import urllib.request
 from typing import Dict, Any
 from tonsdk.contract.wallet import Wallets, WalletVersionEnum
+import nacl.signing
 
 class TonCryptoEngine:
     """
