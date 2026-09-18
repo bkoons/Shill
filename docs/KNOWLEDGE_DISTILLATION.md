@@ -95,4 +95,4 @@ ollama run shill-mind "Explain partition tolerance in high-throughput logs"
 ```
 
 ### llama.cpp Quantization
-Use the automated recipe script [`training/export_gguf.sh`](file:///home/bradk/20280910-Projects/Shill/training/export_gguf.sh) to merge LoRA weights and quantize into `Q4_K_M` GGUF binaries.
+Use the automated recipe script [`training/export_gguf.sh`](../training/export_gguf.sh) to merge LoRA weights and quantize into `Q4_K_M` GGUF binaries.

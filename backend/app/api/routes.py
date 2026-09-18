@@ -393,15 +393,19 @@ def export_dataset():
     jan_path = dataset_distiller.generate_jan_manifest()
     lm_path = dataset_distiller.generate_lmstudio_manifest()
     recipe = dataset_distiller.generate_llamacpp_recipe()
+    
+    def _rel(p: str) -> str:
+        return os.path.join("training", os.path.basename(p))
+
     return {
         "status": "success",
-        "sft_dataset_path": sft_path,
-        "dpo_dataset_path": dpo_path,
-        "huggingface_dataset_path": hf_path,
-        "modelfile_path": modelfile,
-        "jan_manifest_path": jan_path,
-        "lmstudio_preset_path": lm_path,
-        "recipe_path": recipe
+        "sft_dataset_path": _rel(sft_path),
+        "dpo_dataset_path": _rel(dpo_path),
+        "huggingface_dataset_path": _rel(hf_path),
+        "modelfile_path": _rel(modelfile),
+        "jan_manifest_path": _rel(jan_path),
+        "lmstudio_preset_path": _rel(lm_path),
+        "recipe_path": _rel(recipe)
     }
 
 # --- Recursive Meta-Cognition & Self-Correction Routes ---

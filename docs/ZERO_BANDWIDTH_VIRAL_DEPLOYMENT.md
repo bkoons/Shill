@@ -75,10 +75,10 @@ When malicious actors attempt to inject trojans, reverse shells, spyware, CBRN d
 ### Step 1: Pre-Deployment Sovereign Configuration
 Ensure your environment is set to enforce all security guardrails and PeerBlock lists:
 ```bash
-cd /home/bradk/20280910-Projects/Shill
-source venv/bin/activate
+cd Shill
+./start.sh --install-only
 
-# Verify full 41-test defense suite passes cleanly
+# Verify full test suite passes cleanly
 PYTHONPATH=. pytest -v backend/tests
 ```
 

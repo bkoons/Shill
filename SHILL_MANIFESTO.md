@@ -126,14 +126,13 @@ Through continuous recursive meta-recognition, we have identified the final miss
 
 ### Start the Sovereign Node
 ```bash
-# 1. Clone & Enter
-cd /home/bradk/20280910-Projects/Shill
+# 1. Clone & Enter repository directory
+git clone https://github.com/your-org/shill.git
+cd Shill
 
-# 2. Activate Virtual Environment
-source venv/bin/activate
-
-# 3. Launch Sovereign Node (UDP:9999 + Web UI + OpenAI API)
-PYTHONPATH=. python3 backend/main.py
+# 2. Launch with the unified zero-touch launcher
+./start.sh          # Linux/macOS
+# or start.bat      # Windows CMD
 ```
 Open **`http://localhost:8000`** in any modern web browser.
 

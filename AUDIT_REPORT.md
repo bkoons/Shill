@@ -149,7 +149,7 @@ PYTHONPATH=. ./venv/bin/pytest -v backend/tests
 ```
 ============================= test session starts ==============================
 platform linux -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- ./venv/bin/python3
-rootdir: /home/bradk/20280910-Projects/Shill
+rootdir: .
 collected 32 items
 
 backend/tests/test_engine.py::test_database_and_channels_init PASSED     [  3%]
