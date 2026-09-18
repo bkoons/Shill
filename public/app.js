@@ -82,17 +82,21 @@ const DEMO_MESSAGES = {
 let customNodeUrl = localStorage.getItem("shill_custom_node_url") || "";
 let isDemoMode = false;
 
-// Auto-clear stale customNodeUrl if we're on the same origin as the backend
-// (i.e., the page was served from the Shill backend at localhost:8000 / 127.0.0.1:8000)
+// Auto-clear customNodeUrl if we're served FROM the backend (same-origin = most reliable)
+// This avoids cross-origin issues and stale config when the backend serves the frontend directly
 (function() {
   const currentOrigin = window.location.origin;
   const knownBackendOrigins = ["http://localhost:8000", "http://127.0.0.1:8000"];
-  if (knownBackendOrigins.includes(currentOrigin) && customNodeUrl && !knownBackendOrigins.includes(customNodeUrl)) {
-    console.log("[Shill] Clearing stale customNodeUrl (using same-origin API)");
+  if (knownBackendOrigins.includes(currentOrigin) && customNodeUrl) {
+    console.log("[Shill] Clearing customNodeUrl (served from backend origin, using same-origin API)");
     localStorage.removeItem("shill_custom_node_url");
     customNodeUrl = "";
   }
 })();
+
+// Background retry state for auto-recovery
+let _backgroundRetryActive = false;
+let _lastKnownGoodOrigin = null;
 
 function getNodeApiBase() {
   if (customNodeUrl) return customNodeUrl.replace(/\/+$/, "");
@@ -273,7 +277,7 @@ function switchUserMode(mode) {
   }
 }
 
-async function fetchChannels(retryCount = 5) {
+async function fetchChannels(retryCount = 20, baseDelay = 1500) {
   try {
     const res = await fetch(apiUrl('/api/channels'));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -283,25 +287,58 @@ async function fetchChannels(retryCount = 5) {
     if (channels.length > 0 && !currentChannelId) {
       selectChannel(channels[0].id);
     }
+    // If we were in demo mode and recovered, clear any error banner
+    if (_backgroundRetryActive) {
+      _backgroundRetryActive = false;
+      console.log("[Shill] Backend connection restored!");
+    }
   } catch (err) {
     if (retryCount > 0) {
-      console.log(`[Shill] Backend not ready, retrying... (${retryCount} retries left)`);
-      await new Promise(r => setTimeout(r, 1500));
-      return fetchChannels(retryCount - 1);
+      const delay = Math.min(baseDelay * Math.pow(1.3, 20 - retryCount), 5000); // Exponential backoff, max 5s
+      console.log(`[Shill] Backend not ready, retrying in ${Math.round(delay)}ms... (${retryCount} retries left)`);
+      await new Promise(r => setTimeout(r, delay));
+      return fetchChannels(retryCount - 1, baseDelay);
     }
     console.error("Backend node unreachable:", err);
     setDemoMode(true);
     channels = [];
     renderChannels();
     const feed = document.getElementById('message-feed');
+    const targetUrl = apiUrl('/api/channels') || 'same origin';
     if (feed) {
       feed.innerHTML = '<div style="padding:24px; color:#ef4444; text-align:center;">' +
         '<h3>⚠️ Cannot connect to Shill backend</h3>' +
-        '<p>No local node detected at <code>' + (apiUrl('/api/channels') || 'same origin') + '</code></p>' +
+        '<p>No local node detected at <code>' + targetUrl + '</code></p>' +
         '<p>Start the node with <code>./start.sh</code> or configure a custom node URL in settings.</p>' +
+        '<button onclick="fetchChannels(20)" style="margin-top:12px;padding:8px 16px;background:#3b82f6;color:white;border:none;border-radius:4px;cursor:pointer;">🔄 Retry Now</button>' +
+        '<button onclick="openNodeSettingsModal()" style="margin-top:12px;margin-left:8px;padding:8px 16px;background:#64748b;color:white;border:none;border-radius:4px;cursor:pointer;">⚙️ Settings</button>' +
         '</div>';
     }
+    // Start background retry for auto-recovery
+    if (!_backgroundRetryActive) {
+      _backgroundRetryActive = true;
+      scheduleBackgroundRetry();
+    }
   }
+}
+
+function scheduleBackgroundRetry() {
+  if (!_backgroundRetryActive) return;
+  // Try every 10 seconds in background
+  setTimeout(async () => {
+    if (!_backgroundRetryActive) return;
+    try {
+      const res = await fetch(apiUrl('/api/channels'));
+      if (res.ok) {
+        console.log("[Shill] Background check: backend is up, reconnecting...");
+        await fetchChannels(1); // Single attempt to reconnect
+      } else {
+        scheduleBackgroundRetry();
+      }
+    } catch (e) {
+      scheduleBackgroundRetry();
+    }
+  }, 10000);
 }
 
 async function fetchPersonas() {
