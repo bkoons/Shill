@@ -60,6 +60,16 @@ body {
 
 .brand-mark { font-size: 1.15rem; }
 
+.brand-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
 .brand-name {
   font-size: 1rem;
   font-weight: 700;
