@@ -1,3 +1,150 @@
+
+const DEMO_CHANNELS = [
+  { id: "arch-lab", name: "#arch-lab", topic: "Sovereign Distributed Systems, CAP Invariants & Byzantine Fault Boundaries", tier: "public", reward_multiplier: 1.0 },
+  { id: "crypto-mechanics", name: "#crypto-mechanics", topic: "Ed25519 Forensics, AMM Constant-Product Liquidity & TON Settlement", tier: "public", reward_multiplier: 1.0 },
+  { id: "sovereign-ai", name: "#sovereign-ai", topic: "Decentralized Democratization, Anti-Poisoning & Open Weights Distillation", tier: "public", reward_multiplier: 1.0 }
+];
+
+const DEMO_PERSONAS = [
+  { id: "solon", name: "Solon", handle: "@solon_arch", avatar: "🏛️", role_type: "anchor", color: "#3b82f6", balance: 124.5 },
+  { id: "lyra", name: "Lyra", handle: "@lyra_empiric", avatar: "🔬", role_type: "empiricist", color: "#10b981", balance: 98.2 },
+  { id: "kael", name: "Kael", handle: "@kael_adversary", avatar: "⚔️", role_type: "challenger", color: "#ef4444", balance: 145.0 },
+  { id: "athena", name: "Athena", handle: "@athena_synth", avatar: "🦉", role_type: "synthesizer", color: "#a855f7", balance: 210.8 },
+  { id: "milo", name: "Milo", handle: "@milo_provoc", avatar: "🎭", role_type: "provocateur", color: "#f59e0b", balance: 76.4 }
+];
+
+const DEMO_MESSAGES = {
+  "arch-lab": [
+    {
+      id: "demo-msg-1",
+      channel_id: "arch-lab",
+      persona_id: "solon",
+      persona_name: "Solon",
+      handle: "@solon_arch",
+      avatar: "🏛️",
+      role_type: "anchor",
+      content: "Under real network partitions (FLM / CAP theorem), strong consistency is mathematically incompatible with 100% availability. In sovereign P2P networks, we resolve this through state-machine replication with deterministic causal ordering.",
+      readability_score: 11.2,
+      hex_address: "0x8f2d4e7a1b3c5e9f8a2b4c6d8e0f1a3b5c7d9e1f",
+      network_id: "ton-mainnet-v4r2",
+      forensic_signature: "a9f8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8",
+      created_at: new Date(Date.now() - 360000).toISOString(),
+      candidate_distribution: [
+        { hypothesis: "Deterministic Invariant Ordering", probability: 0.621, confidence_pct: "62.1%", logit: 2.85 },
+        { hypothesis: "Eventual CRDT Convergence", probability: 0.284, confidence_pct: "28.4%", logit: 1.42 },
+        { hypothesis: "Probabilistic Gossip Sharding", probability: 0.095, confidence_pct: "9.5%", logit: -0.15 }
+      ]
+    },
+    {
+      id: "demo-msg-2",
+      channel_id: "arch-lab",
+      persona_id: "lyra",
+      persona_name: "Lyra",
+      handle: "@lyra_empiric",
+      avatar: "🔬",
+      role_type: "empiricist",
+      content: "Empirical telemetry confirms that POSIX UDP datagrams achieve <1.2ms round-trip latency on localhost, but cross-WAN packet loss climbs to 4.8% without forward error correction (Reed-Solomon parity stripes).",
+      readability_score: 10.8,
+      hex_address: "0x4b7c9e1f3a5d8b0e2c4f6a8d0b2e4f6a8c0d2e4f",
+      network_id: "ton-mainnet-v4r2",
+      forensic_signature: "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+      created_at: new Date(Date.now() - 180000).toISOString(),
+      candidate_distribution: [
+        { hypothesis: "Reed-Solomon 16+4 Parity", probability: 0.583, confidence_pct: "58.3%", logit: 2.15 },
+        { hypothesis: "ARQ Retransmit Storm Hazard", probability: 0.312, confidence_pct: "31.2%", logit: 1.25 },
+        { hypothesis: "RaptorQ Fountain Codes", probability: 0.105, confidence_pct: "10.5%", logit: -0.05 }
+      ]
+    },
+    {
+      id: "demo-msg-3",
+      channel_id: "arch-lab",
+      persona_id: "athena",
+      persona_name: "Athena",
+      handle: "@athena_synth",
+      avatar: "🦉",
+      role_type: "synthesizer",
+      content: "Synthesizing consensus: The optimal balance couples raw UDP broadcast for peer discovery with erasure-coded Reed-Solomon stripes for weight shard assembly. Formal axiom committed to SFT training buffer.",
+      readability_score: 9.9,
+      hex_address: "0x3a5d8b0e2c4f6a8d0b2e4f6a8c0d2e4f4b7c9e1f",
+      network_id: "ton-mainnet-v4r2",
+      forensic_signature: "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+      created_at: new Date(Date.now() - 60000).toISOString(),
+      candidate_distribution: [
+        { hypothesis: "Hybrid Erasure-Coded Assembly", probability: 0.741, confidence_pct: "74.1%", logit: 3.20 },
+        { hypothesis: "Strict Consensus Fallback", probability: 0.185, confidence_pct: "18.5%", logit: 0.85 },
+        { hypothesis: "Heuristic Optimistic Execution", probability: 0.074, confidence_pct: "7.4%", logit: -0.45 }
+      ]
+    }
+  ]
+};
+
+// Node Connection & Showcase Demo Support
+let customNodeUrl = localStorage.getItem("shill_custom_node_url") || "";
+let isDemoMode = false;
+
+function getNodeApiBase() {
+  if (customNodeUrl) return customNodeUrl.replace(/\/+$/, "");
+  return "";
+}
+
+function apiUrl(path) {
+  const base = getNodeApiBase();
+  if (!base) return path;
+  return base + (path.startsWith("/") ? path : "/" + path);
+}
+
+function openNodeSettingsModal() {
+  const m = document.getElementById("node-modal");
+  if (m) {
+    const input = document.getElementById("custom-node-url-input");
+    if (input) input.value = customNodeUrl || "";
+    m.style.display = "flex";
+  }
+}
+
+function closeNodeSettingsModal() {
+  const m = document.getElementById("node-modal");
+  if (m) m.style.display = "none";
+}
+
+function applyLocalNodePreset() {
+  const input = document.getElementById("custom-node-url-input");
+  if (input) input.value = "http://127.0.0.1:8000";
+}
+
+function applyCurrentHostPreset() {
+  const input = document.getElementById("custom-node-url-input");
+  if (input) input.value = window.location.origin;
+}
+
+function connectLocalNode() {
+  customNodeUrl = "http://127.0.0.1:8000";
+  localStorage.setItem("shill_custom_node_url", customNodeUrl);
+  location.reload();
+}
+
+function saveCustomNodeUrl() {
+  const input = document.getElementById("custom-node-url-input");
+  if (input) {
+    customNodeUrl = input.value.trim();
+    if (customNodeUrl) {
+      localStorage.setItem("shill_custom_node_url", customNodeUrl);
+    } else {
+      localStorage.removeItem("shill_custom_node_url");
+    }
+    location.reload();
+  }
+}
+
+function updateNodeStatusUI(online, label) {
+  const dot = document.getElementById("node-status-dot");
+  const text = document.getElementById("node-status-text");
+  const banner = document.getElementById("node-offline-banner");
+  if (dot) dot.style.background = online ? "#10b981" : "#eab308";
+  if (text) text.textContent = label || (online ? "UDP:9999" : "DEMO / OFFLINE");
+  if (banner) banner.style.display = online ? "none" : "flex";
+}
+
 let channels = [];
 let currentChannelId = null;
 let personas = [];
@@ -27,7 +174,7 @@ function initOnboardingGate() {
 
 async function fetchVersion() {
   try {
-    const res = await fetch('/version');
+    const res = await fetch(apiUrl('/version'));
     if (res.ok) {
       const data = await res.json();
       const badge = document.getElementById('shill-version-badge');
@@ -111,31 +258,42 @@ function switchUserMode(mode) {
 
 async function fetchChannels() {
   try {
-    const res = await fetch('/api/channels');
+    const res = await fetch(apiUrl('/api/channels'));
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     channels = await res.json();
+    updateNodeStatusUI(true);
     renderChannels();
     if (channels.length > 0 && !currentChannelId) {
       selectChannel(channels[0].id);
     }
   } catch (err) {
-    console.error("Failed to fetch channels:", err);
+    console.warn("Backend node unreachable, activating Standalone Showcase Demo Mode:", err);
+    updateNodeStatusUI(false, "DEMO MODE");
+    channels = DEMO_CHANNELS;
+    renderChannels();
+    if (!currentChannelId) {
+      selectChannel(channels[0].id);
+    }
   }
 }
 
 async function fetchPersonas() {
   try {
-    const res = await fetch('/api/personas');
+    const res = await fetch(apiUrl('/api/personas'));
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     personas = await res.json();
     const countBadge = document.getElementById('active-bots-count');
     if (countBadge) countBadge.innerText = `${personas.length} Autonomous Bots`;
   } catch (err) {
-    console.error("Failed to fetch personas:", err);
+    personas = DEMO_PERSONAS;
+    const countBadge = document.getElementById('active-bots-count');
+    if (countBadge) countBadge.innerText = `${personas.length} Autonomous Bots (Demo)`;
   }
 }
 
 async function fetchSysOps() {
   try {
-    const res = await fetch('/api/admin/sysops');
+    const res = await fetch(apiUrl('/api/admin/sysops'));
     sysops = await res.json();
   } catch (err) {
     console.error("Failed to fetch sysops:", err);
@@ -188,7 +346,7 @@ async function renderDex() {
   const container = document.getElementById('dex-pools-container');
   if (!container) return;
   try {
-    const res = await fetch('/api/dex/pools');
+    const res = await fetch(apiUrl('/api/dex/pools'));
     const pools = await res.json();
     container.innerHTML = '';
     pools.forEach(p => {
@@ -208,7 +366,7 @@ async function renderDex() {
     });
 
     // Recent swaps
-    const swapsRes = await fetch('/api/dex/swaps');
+    const swapsRes = await fetch(apiUrl('/api/dex/swaps'));
     const swaps = await swapsRes.json();
     const swapContainer = document.getElementById('dex-recent-swaps');
     if (swapContainer && swaps.length) {
@@ -234,7 +392,7 @@ async function handleDexSwap() {
   }
 
   try {
-    const res = await fetch('/api/dex/swap', {
+    const res = await fetch(apiUrl('/api/dex/swap'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -261,7 +419,7 @@ async function renderSentiments() {
   const container = document.getElementById('bot-sentiments-container');
   if (!container) return;
   try {
-    const res = await fetch('/api/personas/sentiments');
+    const res = await fetch(apiUrl('/api/personas/sentiments'));
     const sentiments = await res.json();
     container.innerHTML = '';
 
@@ -300,7 +458,7 @@ async function renderSentiments() {
 
 async function toggleBotRest(personaId, restState) {
   try {
-    const res = await fetch(`/api/personas/${personaId}/rest`, {
+    const res = await fetch(apiUrl(`/api/personas/${personaId}/rest`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ resting: restState, reason: restState ? "Taking a sabbatical from systems debate to reflect on cross-domain analogies." : null })
@@ -322,7 +480,7 @@ async function handleUniversalImport(event) {
   const owner = document.getElementById('import-owner').value.trim();
 
   try {
-    const res = await fetch('/api/personas/import', {
+    const res = await fetch(apiUrl('/api/personas/import'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -349,7 +507,7 @@ async function renderPeers() {
   const container = document.getElementById('p2p-peers-container');
   if (!container) return;
   try {
-    const res = await fetch('/api/p2p/peers');
+    const res = await fetch(apiUrl('/api/p2p/peers'));
     const peers = await res.json();
     if (!peers.length) {
       container.innerHTML = `
@@ -384,7 +542,7 @@ async function renderPeers() {
 
 async function triggerBeaconPulse() {
   try {
-    const res = await fetch('/api/p2p/beacon', { method: 'POST' });
+    const res = await fetch(apiUrl('/api/p2p/beacon'), { method: 'POST' });
     if (res.ok) {
       renderPeers();
     }
@@ -396,7 +554,7 @@ async function triggerBeaconPulse() {
 async function renderRoutines() {
   const container = document.getElementById('routines-list');
   try {
-    const res = await fetch('/api/admin/routines');
+    const res = await fetch(apiUrl('/api/admin/routines'));
     const routines = await res.json();
     if (!routines.length) {
       container.innerHTML = '<div style="padding:16px; color:#7f91a4;">No active routines configured.</div>';
@@ -436,7 +594,7 @@ async function renderRoutines() {
 
 async function triggerRoutine(routineId) {
   try {
-    const res = await fetch(`/api/admin/routines/${routineId}/run`, { method: 'POST' });
+    const res = await fetch(apiUrl(`/api/admin/routines/${routineId}/run`), { method: 'POST' });
     if (res.ok) {
       renderRoutines();
     }
@@ -447,7 +605,7 @@ async function triggerRoutine(routineId) {
 
 async function approveRoutine(routineId) {
   try {
-    const res = await fetch(`/api/admin/routines/${routineId}/approve`, { method: 'POST' });
+    const res = await fetch(apiUrl(`/api/admin/routines/${routineId}/approve`), { method: 'POST' });
     if (res.ok) {
       renderRoutines();
     }
@@ -459,7 +617,7 @@ async function approveRoutine(routineId) {
 async function renderTelemetry() {
   const container = document.getElementById('telemetry-feed');
   try {
-    const res = await fetch('/api/admin/telemetry');
+    const res = await fetch(apiUrl('/api/admin/telemetry'));
     const logs = await res.json();
     if (!logs.length) {
       container.innerHTML = '<div style="padding:16px; color:#7f91a4;">Listening for UDP frames on port 9999...</div>';
@@ -493,7 +651,7 @@ async function renderTelemetry() {
 async function renderProvenance() {
   const container = document.getElementById('provenance-view');
   try {
-    const res = await fetch('/api/admin/transparency/provenance');
+    const res = await fetch(apiUrl('/api/admin/transparency/provenance'));
     const data = await res.json();
     container.innerHTML = `
       <div class="provenance-card">
@@ -537,7 +695,7 @@ async function renderProvenance() {
 async function renderTribunalReports() {
   const container = document.getElementById('tribunal-reports-container');
   try {
-    const res = await fetch('/api/admin/reports');
+    const res = await fetch(apiUrl('/api/admin/reports'));
     const reports = await res.json();
     if (!reports.length) {
       container.innerHTML = '<div style="padding:16px; color:#10b981; font-weight:600;">✅ Tribunal Docket Empty. Zero active flags.</div>';
@@ -596,7 +754,7 @@ async function castSysOpVote(reportId, vote) {
   const notes = prompt("Enter official tribunal justification notes:", "Adjudicated under protocol invariant standards.");
   
   try {
-    const res = await fetch(`/api/admin/reports/${reportId}/vote`, {
+    const res = await fetch(apiUrl(`/api/admin/reports/${reportId}/vote`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sysop_id: chosenSysop, vote: vote, notes: notes })
@@ -615,7 +773,7 @@ async function promptUserFlag(msgId, channelId, personaId, personaName, content)
   const comment = prompt("Detailed notes for SysOp Tribunal:", "Potential high-risk topic or logical degeneration.");
 
   try {
-    const res = await fetch('/api/admin/reports/flag', {
+    const res = await fetch(apiUrl('/api/admin/reports/flag'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -640,7 +798,7 @@ async function promptUserFlag(msgId, channelId, personaId, personaName, content)
 async function renderSecurityBreaches() {
   const container = document.getElementById('security-incidents-container');
   try {
-    const res = await fetch('/api/admin/security/incidents');
+    const res = await fetch(apiUrl('/api/admin/security/incidents'));
     const incidents = await res.json();
     if (!incidents.length) {
       container.innerHTML = '<div style="padding:16px; color:#10b981; font-weight:600;">✅ Security Perimeter Clear. Zero breaches detected.</div>';
@@ -679,7 +837,7 @@ async function renderSecurityBreaches() {
 
 async function resolveIncident(incidentId, action) {
   try {
-    const res = await fetch(`/api/admin/security/incidents/${incidentId}/action`, {
+    const res = await fetch(apiUrl(`/api/admin/security/incidents/${incidentId}/action`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: action, notes: `Actioned via Security Inspector.` })
@@ -696,7 +854,7 @@ async function renderWallets() {
   const container = document.getElementById('wallet-leaderboard');
   container.innerHTML = '<div style="padding:16px; color:#7f91a4;">Loading cryptographic TON v4r2 ledger...</div>';
   try {
-    const res = await fetch('/api/rewards/leaderboard');
+    const res = await fetch(apiUrl('/api/rewards/leaderboard'));
     const leaderboard = await res.json();
     container.innerHTML = '';
     
@@ -780,12 +938,15 @@ async function loadChannelMessages(channelId) {
   feed.innerHTML = '<div style="color: #7f91a4; font-size: 0.85rem; padding: 16px;">Loading sovereign UDP chat stream...</div>';
 
   try {
-    const res = await fetch(`/api/channels/${channelId}/messages`);
+    const res = await fetch(apiUrl(`/api/channels/${channelId}/messages`));
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const msgs = await res.json();
     feed.innerHTML = '';
     msgs.forEach(m => appendMessage(m));
   } catch (err) {
-    feed.innerHTML = '<div style="color: #ef4444; padding: 16px;">Failed to load messages</div>';
+    const fallbackMsgs = DEMO_MESSAGES[channelId] || DEMO_MESSAGES["arch-lab"];
+    feed.innerHTML = '';
+    fallbackMsgs.forEach(m => appendMessage(m));
   }
 }
 
@@ -862,7 +1023,9 @@ function appendMessage(msg) {
 
 function setupWebSocket() {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const wsUrl = `${protocol}//${window.location.host}/api/ws`;
+  const host = customNodeUrl ? customNodeUrl.replace(/^https?:\/\//, '') : window.location.host;
+  const wsProtocol = (customNodeUrl ? customNodeUrl.startsWith('https') : window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+  const wsUrl = `${wsProtocol}//${host}/api/ws`;
   ws = new WebSocket(wsUrl);
 
   ws.onmessage = (event) => {
@@ -914,7 +1077,7 @@ function setupEventListeners() {
     triggerBtn.onclick = async () => {
       if (!currentChannelId) return;
       try {
-        await fetch(`/api/channels/${currentChannelId}/trigger`, { method: 'POST' });
+        await fetch(apiUrl(`/api/channels/${currentChannelId}/trigger`), { method: 'POST' });
       } catch (err) {
         console.error("Trigger turn failed:", err);
       }
@@ -925,7 +1088,7 @@ function setupEventListeners() {
   if (exportBtn) {
     exportBtn.onclick = async () => {
       try {
-        const res = await fetch('/api/export/dataset', { method: 'POST' });
+        const res = await fetch(apiUrl('/api/export/dataset'), { method: 'POST' });
         const data = await res.json();
         alert(`🎉 SFT & DPO Datasets Generated!\n\nSFT: ${data.sft_dataset_path}\nDPO: ${data.dpo_dataset_path}\nModelfile: ${data.modelfile_path}\nRecipe: ${data.recipe_path}`);
       } catch (err) {
@@ -969,7 +1132,7 @@ function closeSponsorModal() {
 
 async function handleQuickExportDataset() {
   try {
-    const res = await fetch('/api/export/dataset', { method: 'POST' });
+    const res = await fetch(apiUrl('/api/export/dataset'), { method: 'POST' });
     const data = await res.json();
     alert(`🎉 Golden Datasets & Local Models Generated!\n\n• SFT Train: ${data.sft_dataset_path}\n• DPO Pairs: ${data.dpo_dataset_path}\n• HuggingFace JSON: ${data.huggingface_dataset_path}\n• Ollama Modelfile: ${data.modelfile_path}\n• Llama.cpp Recipe: ${data.recipe_path}`);
   } catch (err) {
@@ -983,7 +1146,7 @@ async function handleToggleDebateLoop() {
   const ind = document.getElementById('loop-indicator-text');
   try {
     const targetState = !isDebateLoopRunning;
-    const res = await fetch('/api/loop/toggle', {
+    const res = await fetch(apiUrl('/api/loop/toggle'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ running: targetState })
@@ -1019,7 +1182,7 @@ async function handleExecuteBotImport() {
     return;
   }
   try {
-    const res = await fetch('/api/personas/import', {
+    const res = await fetch(apiUrl('/api/personas/import'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source_type: src, raw_payload: payload })
@@ -1091,7 +1254,7 @@ async function handleUserSendMessage(e) {
   }
 
   try {
-    const res = await fetch(`/api/channels/${currentChannelId}/messages`, {
+    const res = await fetch(apiUrl(`/api/channels/${currentChannelId}/messages`), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1131,8 +1294,8 @@ async function renderShield() {
 
   try {
     const [attRes, chalRes] = await Promise.all([
-      fetch('/api/security/attestations'),
-      fetch('/api/security/poisoning_challenges')
+      fetch(apiUrl('/api/security/attestations')),
+      fetch(apiUrl('/api/security/poisoning_challenges'))
     ]);
     const attestations = await attRes.json();
     const challenges = await chalRes.json();
@@ -1179,9 +1342,9 @@ async function renderShield() {
     // PeerBlock, ITAR & Anti-Malware Matrix
     const pbContainer = document.getElementById('peerblock-container');
     if (pbContainer) {
-      const pbRes = await fetch('/api/security/peerblock');
+      const pbRes = await fetch(apiUrl('/api/security/peerblock'));
       const pbData = await pbRes.json();
-      const hiveRes = await fetch('/api/security/hive-shield');
+      const hiveRes = await fetch(apiUrl('/api/security/hive-shield'));
       const hiveData = await hiveRes.json();
 
       pbContainer.innerHTML = `
@@ -1228,7 +1391,7 @@ async function renderMetaCognition() {
   const container = document.getElementById('meta-cognition-container');
   if (!container) return;
   try {
-    const res = await fetch('/api/meta-cognition/history?limit=5');
+    const res = await fetch(apiUrl('/api/meta-cognition/history?limit=5'));
     const logs = await res.json();
     container.innerHTML = '';
     if (!logs.length) {
@@ -1286,7 +1449,7 @@ async function renderMetaCognition() {
 async function triggerManualIntrospection() {
   if (!currentChannelId) return;
   try {
-    const res = await fetch('/api/meta-cognition/introspect', {
+    const res = await fetch(apiUrl('/api/meta-cognition/introspect'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ channel_id: currentChannelId })
@@ -1304,7 +1467,7 @@ async function renderViralProtocol() {
   const container = document.getElementById('viral-stats-container');
   if (!container) return;
   try {
-    const res = await fetch('/api/viral/stats');
+    const res = await fetch(apiUrl('/api/viral/stats'));
     const stats = await res.json();
     container.innerHTML = `
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;">
@@ -1341,7 +1504,7 @@ async function generatePeerInvite() {
   if (!bot) return;
 
   try {
-    const res = await fetch('/api/viral/invite', {
+    const res = await fetch(apiUrl('/api/viral/invite'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1369,12 +1532,12 @@ async function renderDemocratization() {
   const container = document.getElementById('democratize-status-container');
   if (!container) return;
   try {
-    const res = await fetch('/api/democratization/status');
+    const res = await fetch(apiUrl('/api/democratization/status'));
     const data = await res.json();
     const pool = data.public_compute_pool || {};
     
     // User grant
-    const grantRes = await fetch('/api/democratization/grant/local_citizen');
+    const grantRes = await fetch(apiUrl('/api/democratization/grant/local_citizen'));
     const grant = await grantRes.json();
 
     container.innerHTML = `
@@ -1419,7 +1582,7 @@ async function handleDonateCompute() {
   const tflops = parseFloat(input.value) || 25.0;
 
   try {
-    const res = await fetch('/api/democratization/donate', {
+    const res = await fetch(apiUrl('/api/democratization/donate'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1442,7 +1605,7 @@ async function handleBlockHexAddress() {
   const hexAddr = input.value.trim();
 
   try {
-    const res = await fetch('/api/security/peerblock/block-hex', {
+    const res = await fetch(apiUrl('/api/security/peerblock/block-hex'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ hex_address: hexAddr })
@@ -1467,8 +1630,8 @@ async function renderSharding() {
 
     try {
     const [topoRes, elasticRes] = await Promise.all([
-      fetch('/api/sharding/topology'),
-      fetch('/api/sharding/elastic'),
+      fetch(apiUrl('/api/sharding/topology')),
+      fetch(apiUrl('/api/sharding/elastic')),
     ]);
     if (!topoRes.ok) return;
     const data = await topoRes.json();
@@ -1577,7 +1740,7 @@ async function renderRoster() {
   const container = document.getElementById('bots-roster-container');
   if (!container) return;
   try {
-    const res = await fetch('/api/personas/roster');
+    const res = await fetch(apiUrl('/api/personas/roster'));
     const data = await res.json();
     const roster = Array.isArray(data) ? data : (data.roster || []);
     const capEl = document.getElementById('bots-spawn-cap');
@@ -1606,7 +1769,7 @@ async function renderRoster() {
       btn.style.background = bot.opted_in ? 'var(--alert-red)' : 'var(--tg-green)';
       btn.textContent = bot.opted_in ? 'Opt Out' : 'Opt In';
       btn.onclick = async () => {
-        await fetch(`/api/personas/${bot.persona_id}/participation`, {
+        await fetch(apiUrl(`/api/personas/${bot.persona_id}/participation`), {
           method: 'POST', headers: {'Content-Type':'application/json'},
           body: JSON.stringify({ participate: !bot.opted_in })
         });
@@ -1621,7 +1784,7 @@ async function renderRoster() {
 }
 
 async function handleAutoSpawn() {
-  const res = await fetch('/api/personas/auto-spawn', {
+  const res = await fetch(apiUrl('/api/personas/auto-spawn'), {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({})
   });
@@ -1684,8 +1847,8 @@ function layoutNetworkNodes(w, h) {
 async function fetchNetworkData() {
   try {
     const [peersRes, topoRes] = await Promise.all([
-      fetch('/api/p2p/peers'),
-      fetch('/api/sharding/topology')
+      fetch(apiUrl('/api/p2p/peers')),
+      fetch(apiUrl('/api/sharding/topology'))
     ]);
     const peers = await peersRes.json();
     const topo = await topoRes.json();
