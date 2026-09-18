@@ -1008,19 +1008,64 @@ body {
   position: fixed; inset: 0; z-index: 1000;
   background: radial-gradient(ellipse at 30% 20%, #14283c 0%, #0e1621 55%);
   display: flex; align-items: center; justify-content: center;
-  overflow-y: auto; padding: 24px;
+  overflow-y: auto; padding: 24px 16px;
 }
 .landing-card {
-  background: rgba(23, 33, 43, 0.92);
+  background: rgba(23, 33, 43, 0.96);
   border: 1px solid var(--tg-border);
   border-radius: 16px;
   padding: 32px 36px;
-  max-width: 640px; width: 100%;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  max-width: 780px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  max-height: 90vh;
+  overflow-y: auto;
 }
-.landing-card h1 { font-size: 1.9rem; margin-bottom: 6px; }
-.landing-tag { color: var(--tg-text-muted); font-size: 0.92rem; line-height: 1.5; margin-bottom: 22px; }
-.landing-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
+.landing-card h1 { font-size: 2.1rem; margin-bottom: 6px; }
+.landing-tag { color: var(--tg-text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 22px; }
+
+.landing-problem-solution-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 640px) {
+  .landing-problem-solution-grid { grid-template-columns: 1fr; }
+  .landing-card { padding: 20px 16px; }
+}
+
+.landing-box-problem {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 12px;
+  padding: 16px;
+}
+.landing-box-solution {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 12px;
+  padding: 16px;
+}
+.landing-box-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.landing-box-problem .landing-box-title { color: #f87171; }
+.landing-box-solution .landing-box-title { color: #34d399; }
+.landing-box-content {
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.landing-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
 .landing-step { display: flex; gap: 14px; align-items: flex-start; }
 .step-num {
   flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;

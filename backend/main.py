@@ -37,10 +37,11 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in os.getenv("SHILL_CORS_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000").split(",") if o.strip()],
+    allow_origins=[o.strip() for o in os.getenv("SHILL_CORS_ORIGINS", "*").split(",") if o.strip()],
+    allow_origin_regex=os.getenv("SHILL_CORS_REGEX", r"https?://.*"),
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.add_middleware(RateLimitMiddleware)

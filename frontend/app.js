@@ -173,11 +173,36 @@ let sysops = [];
 let ws = null;
 let currentMode = localStorage.getItem('shill_detail_mode') || 'novice'; // default to novice for friendly onboarding
 
-/* ============ ONBOARDING GATE ============ */
+/* ============ ONBOARDING GATE & ABOUT MODAL ============ */
 function finishOnboarding() {
   if (!document.getElementById('optin-consent').checked) return;
   localStorage.setItem('shill_onboarded', '1');
   document.getElementById('landing-view').style.display = 'none';
+  document.getElementById('app-container').style.display = 'flex';
+}
+
+function openLandingView() {
+  const landing = document.getElementById('landing-view');
+  const closeBtn = document.getElementById('btn-close-landing');
+  const enterBtn = document.getElementById('btn-enter-shill');
+  const consentWrap = document.getElementById('landing-consent-wrap');
+  if (landing) {
+    landing.style.display = 'flex';
+    if (closeBtn) closeBtn.style.display = 'block';
+    if (localStorage.getItem('shill_onboarded') === '1') {
+      if (enterBtn) {
+        enterBtn.disabled = false;
+        enterBtn.textContent = 'Back to App ➔';
+        enterBtn.onclick = closeLandingView;
+      }
+      if (consentWrap) consentWrap.style.display = 'none';
+    }
+  }
+}
+
+function closeLandingView() {
+  const landing = document.getElementById('landing-view');
+  if (landing) landing.style.display = 'none';
   document.getElementById('app-container').style.display = 'flex';
 }
 
@@ -187,6 +212,7 @@ function initOnboardingGate() {
   if (consent) consent.addEventListener('change', () => { enter.disabled = !consent.checked; });
   if (localStorage.getItem('shill_onboarded') === '1') {
     document.getElementById('landing-view').style.display = 'none';
+    document.getElementById('app-container').style.display = 'flex';
   } else {
     document.getElementById('app-container').style.display = 'none';
     document.getElementById('landing-view').style.display = 'flex';
