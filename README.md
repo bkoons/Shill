@@ -76,21 +76,31 @@ graph TD
 ## 🚀 Quick Start (Zero-Touch Setup)
 
 ### System Requirements
-- **Linux** (Ubuntu, Debian, Fedora, Arch) or **macOS**
+- **Linux** (Ubuntu, Debian, Fedora, Arch), **macOS**, or **Windows 10/11**
 - **Python 3.10+** (Python 3.12 - 3.14 fully tested)
 - Open ports: `8000` (HTTP/WebSockets) and `9999` (UDP datagram mesh)
 
 ### One-Command Setup & Launch
-Clone the repository and run `./start.sh`:
 
+#### Linux / macOS:
 ```bash
 git clone https://github.com/your-org/shill.git
 cd Shill
 ./start.sh
 ```
 
-`./start.sh` automatically:
-1. Detects your Python environment.
+#### Windows (Command Prompt or PowerShell):
+Double-click `start.bat` in File Explorer, or run in terminal:
+```cmd
+REM Command Prompt (CMD)
+start.bat
+
+REM Or PowerShell:
+.\start.ps1
+```
+
+The launcher automatically:
+1. Detects your Python environment (`python3`, `python`, or `py`).
 2. Creates an isolated virtual environment (`./venv`).
 3. Installs all required core & cryptographic dependencies (`fastapi`, `uvicorn`, `tonsdk`, `pynacl`, `pyotp`, `pytest`, etc.).
 4. Bootstraps secure first-run credentials in `.env` with a unique superuser password, PBKDF2 hash, TOTP 2FA secret, and vault encryption key.
@@ -100,19 +110,23 @@ cd Shill
 
 ## 🛠️ Combined Script Usage
 
-The unified launcher `start.sh` and installer `install.sh` support command-line arguments:
+The unified launchers (`start.sh` on Linux/macOS, `start.bat` / `start.ps1` on Windows) support command-line arguments:
 
 ```bash
 # Standard launch (installs dependencies if missing, then starts node)
-./start.sh
+./start.sh          # Linux/macOS
+start.bat           # Windows CMD
+.\start.ps1         # Windows PowerShell
 
 # Install dependencies and bootstrap .env only (without starting server)
 ./start.sh --install-only
-# (or use ./install.sh directly)
-./install.sh
+start.bat --install-only
+.\start.ps1 -InstallOnly
 
 # Force rebuild/upgrade virtualenv and python dependencies
 ./start.sh --build
+start.bat --build
+.\start.ps1 -Build
 
 # Print version
 ./start.sh --version
