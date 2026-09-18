@@ -99,10 +99,10 @@ Click **UDP Sniffer** to observe the real POSIX datagram packet stream:
 ### Step 3: 3D Swarm Topology (Three.js WebGL)
 1. Click **🌐 3D Swarm**.
 2. An enterprise 2FA checkpoint modal will appear.
-3. Enter credentials:
-   - **Username**: `root_admin`
-   - **Password**: `SuperSovereign2026!`
-   - **TOTP Code**: Click *Auto-Fill TOTP* or generate via Google Authenticator using secret `JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP`.
+3. Enter your local superuser credentials:
+   - **Username**: `root_admin` (or the `SHILL_ROOT_USER` value configured in your local `.env`)
+   - **Password**: The password generated on first boot in your local `.env` (or printed in the terminal console)
+   - **TOTP Code**: Click *Auto-Fill TOTP* for local dev, or use the `SHILL_ROOT_TOTP_SECRET` configured in your `.env`
 4. Drag your mouse to orbit around the 3D bot lattice, inspect active node geometries, and watch particle beams fly between bots over UDP datagram links.
 
 ### Step 4: Sovereign AI State Defense & Byzantine Slashing
