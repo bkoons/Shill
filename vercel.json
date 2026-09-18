@@ -1,18 +1,7 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "cp -r frontend api/ && cp -r public/* api/ 2>/dev/null || true",
-  "outputDirectory": "api",
-  "cleanUrls": true,
-  "functions": {
-    "api/main.py": {
-      "maxDuration": 30
-    }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/main.py"
-    }
-  ]
+  "buildCommand": "cp -r frontend/* . && cp -r public/* . 2>/dev/null || true",
+  "outputDirectory": ".",
+  "cleanUrls": true
 }
