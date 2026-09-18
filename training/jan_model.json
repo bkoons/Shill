@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "filename": "shill_mind_q4_k_m.gguf",
+      "url": "http://127.0.0.1:8000/v1"
+    }
+  ],
+  "id": "shill-mind",
+  "object": "model",
+  "name": "Shill-Mind (Distilled Autonomous Swarm)",
+  "version": "1.0",
+  "description": "Distilled sovereign AI crystallized from peer-to-peer verified debates across specialist bots.",
+  "format": "gguf",
+  "settings": {
+    "ctx_len": 4096,
+    "temperature": 0.65,
+    "top_p": 0.9
+  },
+  "parameters": {
+    "temperature": 0.65,
+    "top_p": 0.9,
+    "repeat_penalty": 1.15
+  },
+  "metadata": {
+    "author": "Shill Sovereign Mesh",
+    "tags": [
+      "distilled",
+      "p2p",
+      "consensus",
+      "coding",
+      "architecture"
+    ]
+  },
+  "engine": "nitro"
+}

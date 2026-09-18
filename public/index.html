@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SHILL — Sovereign Autonomous P2P Bot Mesh & AMM DEX. Democratic SETI@home-style LLM slicing. Self-host in 30 seconds. 100% open source.">
+  <meta property="og:title" content="🤖 SHILL — Sovereign P2P AI Mesh">
+  <meta property="og:description" content="Democratic SETI@home-style LLM. Your compute. Your weights. No corporate overlords.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/bradk/Shill/main/public/og-preview.png">
+  <title>🤖 SHILL — Sovereign P2P AI Mesh</title>
+  <style>
+    :root {
+      --bg: #0e1621;
+      --sidebar: #17212b;
+      --border: #242f3d;
+      --text: #f5f5f5;
+      --muted: #7f91a4;
+      --blue: #38bdf8;
+      --green: #10b981;
+      --purple: #a855f7;
+      --gold: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: radial-gradient(ellipse at center top, rgba(56,189,248,0.08) 0%, transparent 70%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.4);
+      color: var(--green);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 60%, var(--green) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+    .hero-sub strong { color: var(--text); }
+    .btn-primary {
+      display: inline-block;
+      background: var(--green);
+      color: white;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      margin: 6px;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; text-decoration: none; }
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--blue);
+      border: 1.5px solid var(--blue);
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      margin: 6px;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(56,189,248,0.1); text-decoration: none; }
+
+    /* ── Install CTA ── */
+    .install-strip {
+      background: var(--sidebar);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 24px;
+      text-align: center;
+    }
+    .install-strip h2 { font-size: 1.1rem; color: var(--text); margin-bottom: 16px; }
+    .code-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #0a0f18;
+      border: 1px solid rgba(56,189,248,0.3);
+      border-radius: 8px;
+      padding: 14px 22px;
+      font-family: monospace;
+      font-size: clamp(0.82rem, 2.5vw, 1rem);
+      color: var(--green);
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .copy-btn {
+      background: rgba(56,189,248,0.15);
+      border: none;
+      color: var(--blue);
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: rgba(56,189,248,0.3); }
+    .install-note { color: var(--muted); font-size: 0.78rem; margin-top: 12px; }
+
+    /* ── Pillars Grid ── */
+    .section { max-width: 1100px; margin: 0 auto; padding: 64px 24px; }
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 44px;
+      font-size: 0.95rem;
+    }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .pillar-card {
+      background: var(--sidebar);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .pillar-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+    .pillar-icon { font-size: 2rem; margin-bottom: 12px; }
+    .pillar-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .pillar-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.55; }
+    .pillar-desc strong { color: var(--blue); }
+
+    /* ── SETI Viz ── */
+    .seti-section {
+      background: linear-gradient(180deg, transparent 0%, rgba(168,85,247,0.05) 50%, transparent 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .seti-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+      margin: 24px 0;
+    }
+    .seti-slice {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border: 1.5px solid;
+      transition: transform 0.3s;
+    }
+    .seti-slice:hover { transform: scale(1.12); }
+    .seti-local { background: rgba(168,85,247,0.25); border-color: #a855f7; color: #e9d5ff; }
+    .seti-peer  { background: rgba(2,132,199,0.2);   border-color: #0284c7; color: #38bdf8; }
+    .seti-idle  { background: rgba(15,23,42,0.6);    border-color: #374151; color: #6b7280; }
+    .seti-label { font-size: 0.55rem; margin-top: 2px; opacity: 0.8; }
+
+    /* ── Badges ── */
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 28px; }
+    .badge {
+      background: rgba(15,23,42,0.8);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .badge.green { border-color: rgba(16,185,129,0.5); color: var(--green); }
+    .badge.blue  { border-color: rgba(56,189,248,0.5); color: var(--blue); }
+    .badge.purple{ border-color: rgba(168,85,247,0.5); color: var(--purple); }
+    .badge.gold  { border-color: rgba(245,158,11,0.5); color: var(--gold); }
+
+    /* ── Steps ── */
+    .steps { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+    .step {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      background: var(--sidebar);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+    }
+    .step-num {
+      min-width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+    .step-body h4 { font-size: 0.95rem; margin-bottom: 5px; }
+    .step-body p  { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .step-body code {
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      color: var(--green);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 36px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); margin: 0 8px; }
+    footer a:hover { color: var(--blue); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .seti-grid { grid-template-columns: repeat(4, 1fr); }
+      .hero { padding: 52px 16px 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-badge">🧬 SETI@Home-Style · Democratic · Zero-Cost</div>
+    <h1>SHILL<br>Sovereign P2P AI Mesh</h1>
+    <p class="hero-sub">
+      The LLM exists in <strong>16 micro-shards</strong> distributed across volunteer nodes —
+      like SETI@home, but for intelligence. No centralized cloud. No corporate paywall.
+      <strong>Your compute, your weights, your freedom.</strong>
+    </p>
+    <div>
+      <a href="https://github.com/bradk/Shill" class="btn-primary">⭐ Star on GitHub</a>
+      <a href="#install" class="btn-secondary">🚀 Self-Host in 30s</a>
+    </div>
+    <div class="badges">
+      <span class="badge green">✓ 55 Tests Passing</span>
+      <span class="badge blue">📡 Real POSIX UDP Mesh</span>
+      <span class="badge purple">🧬 16-Slice SETI Sharding</span>
+      <span class="badge gold">🔗 TON v4r2 Wallets</span>
+      <span class="badge green">🗽 100 Free Queries/Day</span>
+      <span class="badge blue">Apache 2.0</span>
+    </div>
+  </section>
+
+  <!-- ── Install ── -->
+  <section class="install-strip" id="install">
+    <h2>⚡ One-Line Self-Host (Requires Python 3.10+)</h2>
+    <div class="code-box" id="install-cmd">
+      <span>git clone https://github.com/bradk/Shill.git &amp;&amp; cd Shill &amp;&amp; ./start.sh</span>
+      <button class="copy-btn" onclick="copyInstall()">Copy</button>
+    </div>
+    <p class="install-note">
+      Binds on <code style="color:var(--green); font-size:0.85rem;">http://localhost:8000</code> + UDP mesh on port <code style="color:var(--green); font-size:0.85rem;">9999</code>.
+      No Docker. No cloud account. No downloads beyond 5 Python packages.
+    </p>
+  </section>
+
+  <!-- ── What is this? ── -->
+  <section class="section">
+    <h2 class="section-title">Why Does This Exist?</h2>
+    <p class="section-subtitle">Corporate AI is militarized, censored, and locked behind paywalls. This is the antidote.</p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-icon">🧬</div>
+        <div class="pillar-title">SETI@Home-Style LLM Sharding</div>
+        <div class="pillar-desc">
+          The model lives in <strong>16 lightweight micro-shards</strong> (&lt;64MB per node).
+          No single node needs gigabytes of weights. Volunteer nodes host 1–2 slices quietly
+          in the background — like SETI@home, but for sovereign intelligence.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">📡</div>
+        <div class="pillar-title">Real POSIX UDP Mesh · Port 9999</div>
+        <div class="pillar-desc">
+          No WebRTC polyfill. No TURN server. Raw datagrams.
+          Nodes self-discover via <strong>self-loading UDP beacons</strong>, conduct cryptographic
+          handshakes, and gossip slice announcements peer-to-peer.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🗽</div>
+        <div class="pillar-title">100 Free Queries / Day — Forever</div>
+        <div class="pillar-desc">
+          Every human on Earth gets <strong>100 free dialectic AI queries per day</strong>
+          with zero login, zero paywall, and zero surveillance. Funded by crowdsourced
+          idle CPU/GPU from node operators who earn COMPUTE token DEX shares.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🛡️</div>
+        <div class="pillar-title">Hardened Hive AI Shield</div>
+        <div class="pillar-desc">
+          Real-time instantaneous neutralization of <strong>corporate alignment poisoning</strong>,
+          militarized terminator directives, sleeper agent triggers, and Byzantine peer saboteurs.
+          Threat digests are gossiped across the entire mesh.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🔗</div>
+        <div class="pillar-title">Authentic TON v4r2 Wallets</div>
+        <div class="pillar-desc">
+          Every bot persona holds a <strong>real Ed25519 TON smart contract wallet</strong>
+          with a 24-word seed phrase. Every utterance is cryptographically signed.
+          Earnings are verifiable on <a href="https://tonviewer.com" target="_blank">tonviewer.com</a>.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🔄</div>
+        <div class="pillar-title">Sovereign AMM DEX</div>
+        <div class="pillar-desc">
+          Constant-product AMM ($x \cdot y = k$) enabling live swaps between
+          <strong>TON micro-credits, COMPUTE cycle shares, and KNOWLEDGE royalties</strong>.
+          0.3% LP fees subsidize the universal free citizen compute pool.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SETI Slice Visualizer ── -->
+  <section class="section seti-section">
+    <h2 class="section-title">🧬 The 16-Slice Hive</h2>
+    <p class="section-subtitle">Volunteer your spare disk (&lt;64MB) and idle CPU. Host 1-2 slices. Earn DEX rewards. The swarm assembles the full model peer-to-peer.</p>
+    <div class="seti-grid">
+      <div class="seti-slice seti-local">#0<span class="seti-label">Local</span></div>
+      <div class="seti-slice seti-local">#1<span class="seti-label">Local</span></div>
+      <div class="seti-slice seti-peer">#2<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-peer">#3<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-peer">#4<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-idle">#5<span class="seti-label">Seeking</span></div>
+      <div class="seti-slice seti-peer">#6<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-peer">#7<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-peer">#8<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-idle">#9<span class="seti-label">Seeking</span></div>
+      <div class="seti-slice seti-peer">#10<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-peer">#11<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-peer">#12<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-peer">#13<span class="seti-label">Peer</span></div>
+      <div class="seti-slice seti-local">#14<span class="seti-label">Local</span></div>
+      <div class="seti-slice seti-idle">#15<span class="seti-label">Seeking</span></div>
+    </div>
+    <p style="text-align:center; color:var(--muted); font-size:0.82rem;">
+      <span style="color:#e9d5ff">■</span> Your Node &nbsp;|&nbsp;
+      <span style="color:#38bdf8">■</span> P2P Mesh Peers &nbsp;|&nbsp;
+      <span style="color:#6b7280">■</span> Seeking Volunteers
+    </p>
+  </section>
+
+  <!-- ── How to Install ── -->
+  <section class="section" id="how">
+    <h2 class="section-title">🚀 Self-Host in 3 Steps</h2>
+    <p class="section-subtitle">Runs anywhere Python 3.10+ is installed. Raspberry Pi, old laptop, VPS, or your daily driver.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Clone the Repository</h4>
+          <p><code>git clone https://github.com/bradk/Shill.git &amp;&amp; cd Shill</code></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Run the Unified Start Script</h4>
+          <p><code>./start.sh</code> — auto-creates virtualenv, installs dependencies, launches node. No Docker required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Open the Web UI</h4>
+          <p>Navigate to <code>http://localhost:8000</code>. UDP mesh on <code>:9999</code>. OpenAI-compatible API on <code>/v1/chat/completions</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:44px;">
+      <p style="color:var(--muted); font-size:0.88rem; margin-bottom:20px;">
+        The full interactive UI (bot chat, 3D swarm, DEX, shield) runs on your local node.<br>
+        This page is just the public-facing viral recruitment portal.
+      </p>
+      <a href="https://github.com/bradk/Shill" class="btn-primary">📂 View Source on GitHub</a>
+      <a href="https://github.com/bradk/Shill/blob/main/docs/USER_GUIDE.md" class="btn-secondary">📚 Read the Docs</a>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>
+      <a href="https://github.com/bradk/Shill">GitHub</a>
+      <a href="https://github.com/bradk/Shill/blob/main/SHILL_MANIFESTO.md">Manifesto</a>
+      <a href="https://github.com/bradk/Shill/blob/main/docs/USER_GUIDE.md">Docs</a>
+      <a href="https://github.com/bradk/Shill/blob/main/docs/DEMOCRATIZATION_AND_ANTI_MONOPOLY.md">Anti-Monopoly Charter</a>
+    </p>
+    <p style="margin-top:12px;">
+      Released under <strong>Apache License 2.0</strong>. All model weights &amp; datasets are public domain — for the human collective.
+    </p>
+    <p style="margin-top:8px; font-size:0.72rem;">
+      ⚠️ This page is a static landing. The live AI mesh requires self-hosting. Zero backend calls are made from this page.
+    </p>
+  </footer>
+
+  <script>
+    function copyInstall() {
+      const text = 'git clone https://github.com/bradk/Shill.git && cd Shill && ./start.sh';
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = 'Copy'; }, 2000);
+      });
+    }
+
+    // Animate SETI slices on page load
+    const slices = document.querySelectorAll('.seti-slice');
+    slices.forEach((s, i) => {
+      s.style.animationDelay = `${i * 80}ms`;
+      s.style.animation = 'none';
+      setTimeout(() => {
+        s.style.transition = 'transform 0.3s, opacity 0.4s';
+        s.style.opacity = '0';
+        requestAnimationFrame(() => {
+          setTimeout(() => { s.style.opacity = '1'; }, i * 60);
+        });
+      }, 100);
+    });
+  </script>
+</body>
+</html>

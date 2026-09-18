@@ -1,0 +1,46 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Database (local node state — excluded from repo)
+data/shill.db*
+data/routines/
+
+# Test cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Training artifacts (large)
+training/*.jsonl
+training/*.gguf
+training/*.bin
+training/*.safetensors
+
+# Environment secrets
+.env
+.env.*
+*.env
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vercel/Netlify build output
+.vercel/
+.netlify/

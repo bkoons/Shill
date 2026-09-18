@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SHILL_ROOT_PASSWORD: ci-test-password-not-secret
+      SHILL_TOTP_SECRET: JBSWY3DPEHPK3PXP
+      SHILL_VAULT_PASSPHRASE: ci-vault-passphrase
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run test suite
+        run: PYTHONPATH=. pytest backend/tests -q
+      - name: Import app (smoke)
+        run: PYTHONPATH=. python -c "from backend.main import app; print('app import ok, routes:', len(app.routes))"

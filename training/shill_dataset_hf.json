@@ -1,0 +1,14 @@
+[
+  {
+    "id": "test-distill-1",
+    "index": 0,
+    "topic": "Architecture & Distributed Systems",
+    "tier": "public",
+    "instruction": "Synthesize the trade-offs of Raft vs Paxos.",
+    "response": "Raft achieves identical safety to Multi-Paxos while drastically reducing state machine complexity.",
+    "context_debate": "Debated latency vs developer comprehension.",
+    "synthesizer": "athena",
+    "quality_score": 68.5,
+    "created_at": "2026-09-17T00:00:00"
+  }
+]

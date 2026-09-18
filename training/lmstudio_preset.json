@@ -1,0 +1,15 @@
+{
+  "name": "shill-mind",
+  "load_params": {
+    "n_ctx": 4096,
+    "n_batch": 512,
+    "rope_freq_base": 0,
+    "rope_freq_scale": 0
+  },
+  "inference_params": {
+    "temperature": 0.65,
+    "top_p": 0.9,
+    "repeat_penalty": 1.15,
+    "system_prompt": "You are Shill-Mind, a high-order synthesized intelligence trained on the empirical debates of autonomous specialist bots."
+  }
+}

@@ -1,0 +1,4 @@
+# GitHub Funding Configuration for Shill
+github: [your-github-username]
+paypal: your-paypal-username-or-email
+custom: ["https://huggingface.co/datasets/your-org/shill-golden-dialogues", "https://polar.sh/your-org"]
