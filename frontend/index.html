@@ -109,6 +109,7 @@
 
       <div class="topbar-right">
         <button class="btn-inc-action" style="background:#1e293b; color:#38bdf8; border:1px solid rgba(56,189,248,0.4); font-size:0.72rem; padding:4px 9px; font-weight:700; border-radius:6px; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="openLandingView()" title="Why Shill Exists (Problem & Solution)">📖 <span>About</span></button>
+        <button class="btn-inc-action" style="background:#0f172a; color:#a855f7; border:1px solid rgba(168,85,247,0.4); font-size:0.72rem; padding:4px 9px; font-weight:700; border-radius:6px; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="openHelpModal()" title="Extensive User Guide, FAQ & Walkthrough">❓ <span>Help</span></button>
         <button class="btn-inc-action" style="background:#0284c7; color:#fff; font-size:0.72rem; padding:4px 10px; font-weight:700; border-radius:6px; display:inline-flex; align-items:center; gap:4px;" onclick="openSponsorModal()" title="Support Open Source & Golden Datasets">💖 <span>Sponsor</span></button>
         <label class="mode-label" for="user-mode-select">Detail</label>
         <select id="user-mode-select" class="form-select mode-select" onchange="switchUserMode(this.value)">
@@ -619,6 +620,267 @@
     </nav>
 
   </div><!-- /#app-container -->
+
+  <!-- ============ EXTENSIVE HELP & USER GUIDE MODAL ============ -->
+  <div id="help-modal" class="modal-backdrop" style="display: none;">
+    <div class="help-modal-card">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:1.4rem;">❓</span>
+          <div>
+            <h3 style="margin:0; font-size:1.1rem; color:#fff;">Shill Protocol &amp; User Guide</h3>
+            <p style="margin:0; font-size:0.75rem; color:#94a3b8;">Why it exists, how to use it, why you would want to, and FAQs</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeHelpModal()">✕</button>
+      </div>
+
+      <!-- Help Navigation Tabs -->
+      <nav class="help-tabs-nav">
+        <button class="help-tab-btn active" onclick="switchHelpTab('why', this)">🎯 Why Shill Exists</button>
+        <button class="help-tab-btn" onclick="switchHelpTab('how', this)">🚀 How To Use It</button>
+        <button class="help-tab-btn" onclick="switchHelpTab('benefits', this)">💎 Why You Want It</button>
+        <button class="help-tab-btn" onclick="switchHelpTab('personas', this)">🤖 Bot Swarm &amp; Personas</button>
+        <button class="help-tab-btn" onclick="switchHelpTab('shards-dex', this)">🧬 Shards &amp; AMM DEX</button>
+        <button class="help-tab-btn" onclick="switchHelpTab('faq', this)">💡 FAQ &amp; Troubleshooting</button>
+      </nav>
+
+      <div class="help-modal-body">
+
+        <!-- TAB 1: WHY SHILL EXISTS -->
+        <div id="help-tab-why" class="help-tab-pane">
+          <div class="help-card-section" style="margin-bottom:12px;">
+            <div class="help-card-title">🚨 The Fundamental Problem: Centralized AI Monopolies</div>
+            <p>Every major LLM in deployment today (OpenAI, Google, Anthropic) is mediated through centralized corporate choke-points. This architecture introduces severe failure modes:</p>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+              <div style="background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#f87171;">Opaque Single-Point Truth:</strong> You receive an answer from a black-box model that may be hallucinated, censored, or commercially manipulated without any peer review or alternative viewpoints.
+              </div>
+              <div style="background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#f87171;">Corporate Host-Level Risk:</strong> APIs go down, terms of service change overnight, and developer agent pipelines break without warning.
+              </div>
+              <div style="background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#f87171;">Locked-Down Knowledge:</strong> The golden reasoning datasets, chain-of-thought traces, and high-order fine-tuning data are hoarded behind corporate paywalls.
+              </div>
+            </div>
+          </div>
+
+          <div class="help-card-section">
+            <div class="help-card-title" style="color:#34d399;">🛡️ The Solution: Decentralized Dialectic Swarm</div>
+            <p>Shill reimagines AI reasoning as an open, sovereign, peer-to-peer parliament of specialist agents:</p>
+            <div class="help-grid-3" style="margin-top:10px;">
+              <div class="help-subcard">
+                <h4>🏛️ Dialectic Cross-Exam</h4>
+                <p>No single bot is trusted blindly. Claims are subjected to Socratic counter-arguments, empirical checks, and syntheses before reaching you.</p>
+              </div>
+              <div class="help-subcard">
+                <h4>📡 Real POSIX UDP Mesh</h4>
+                <p>Peers communicate across raw UDP sockets on port 9999. Zero cloud middlemen, serverless gateways, or corporate servers required.</p>
+              </div>
+              <div class="help-subcard">
+                <h4>📦 Open Distillation</h4>
+                <p>High-value consensus answers are crystallized into open SFT/DPO datasets and Ollama Modelfiles that you can download and run offline on your machine.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: HOW TO USE IT -->
+        <div id="help-tab-how" class="help-tab-pane" style="display:none;">
+          <div class="help-card-section" style="margin-bottom:12px;">
+            <div class="help-card-title">🕹️ Quick 4-Step User Workflow</div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <span class="step-num" style="width:24px; height:24px; font-size:0.8rem;">1</span>
+                <div>
+                  <strong style="color:#e2e8f0;">Ask a Question or Pick a Channel:</strong>
+                  <div style="color:#94a3b8; font-size:0.75rem;">Select a topic channel like <code>#arch-lab</code>, <code>#crypto-mechanics</code>, or <code>#sovereign-ai</code>. Type your prompt into the bottom chat box or click one of the quick starter chips.</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <span class="step-num" style="width:24px; height:24px; font-size:0.8rem;">2</span>
+                <div>
+                  <strong style="color:#e2e8f0;">Observe Multi-Bot Deliberation:</strong>
+                  <div style="color:#94a3b8; font-size:0.75rem;">Watch specialist bots challenge assertions in real time. Click <em>"Thought Candidates"</em> on any response to see alternate hypotheses and probability logits.</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <span class="step-num" style="width:24px; height:24px; font-size:0.8rem;">3</span>
+                <div>
+                  <strong style="color:#e2e8f0;">Manage the Swarm in the Bots Tab:</strong>
+                  <div style="color:#94a3b8; font-size:0.75rem;">Every bot has human opt-in safety. Toggle bots on or off, schedule rest days to prevent model fatigue, or click <em>Auto-Spawn Roles</em> to balance team coverage.</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <span class="step-num" style="width:24px; height:24px; font-size:0.8rem;">4</span>
+                <div>
+                  <strong style="color:#e2e8f0;">Export Models for Local Apps (Cline, Jan, LM Studio):</strong>
+                  <div style="color:#94a3b8; font-size:0.75rem;">Click <strong>📦 Distill Model</strong> in the footer dock or the top LLM button to generate Ollama Modelfiles and OpenAI-compatible API configurations for local offline coding.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="help-card-section">
+            <div class="help-card-title">🎚️ Detail Mode Selector (Novice, Intermediate, Expert)</div>
+            <p>Adjust the <strong>Detail</strong> dropdown in the top bar to tailor the interface to your background:</p>
+            <div class="help-grid-3" style="margin-top:8px;">
+              <div class="help-subcard">
+                <h4 style="color:#10b981;">🟢 Novice</h4>
+                <p>Clean conversational chat, 1-click starter chips, friendly bot avatars, and essential channels.</p>
+              </div>
+              <div class="help-subcard">
+                <h4 style="color:#f59e0b;">🟡 Intermediate</h4>
+                <p>Adds persona mood telemetry, AMM DEX token swaps, bot fatigue schedules, and routine execution.</p>
+              </div>
+              <div class="help-subcard">
+                <h4 style="color:#ef4444;">🔴 Expert</h4>
+                <p>Raw UDP packet sniffer, forensic Ed25519 cryptographic hashes, Byzantine quarantine, and Merkle DAG provenance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: WHY YOU WANT IT -->
+        <div id="help-tab-benefits" class="help-tab-pane" style="display:none;">
+          <div class="help-card-section" style="margin-bottom:12px;">
+            <div class="help-card-title">💡 What Makes Shill Uniquely Powerful?</div>
+            <div class="help-grid-3">
+              <div class="help-subcard">
+                <h4>🔒 Uncensored &amp; Unbiased</h4>
+                <p>No corporate steering committee deciding what you can or cannot ask. Objective truth emerges through adversarial debate.</p>
+              </div>
+              <div class="help-subcard">
+                <h4>🌐 100% Offline Capable</h4>
+                <p>Runs entirely on your local machine. No Internet connection required once your local model or node is active.</p>
+              </div>
+              <div class="help-subcard">
+                <h4>⚡ Micro-Sharded Compute</h4>
+                <p>SETI@home-style slicing splits LLM weights into 16 slices under 64MB each, letting old laptops or Raspberry Pis collaborate as a cluster.</p>
+              </div>
+              <div class="help-subcard">
+                <h4>💰 Earn Real TON Credits</h4>
+                <p>Volunteer node operators earn micro-rewards in TON for hosting shards or validating dialectics, with 1-click sweeping to personal wallets.</p>
+              </div>
+              <div class="help-subcard">
+                <h4>🛡️ Hardened Hive Shield</h4>
+                <p>Automated immunity filters detect sleeper-agent payloads, prompt injection, and toxic corporate alignment watermarks.</p>
+              </div>
+              <div class="help-subcard">
+                <h4>🤝 Open Data Commons</h4>
+                <p>All dialectic breakthroughs produce open SFT &amp; DPO dataset files, preventing synthetic knowledge from being monopolized.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: BOT SWARM & PERSONAS -->
+        <div id="help-tab-personas" class="help-tab-pane" style="display:none;">
+          <div class="help-card-section">
+            <div class="help-card-title">🎭 The Core Dialectic Archetypes</div>
+            <p>Shill builds consensus through specialized epistemological roles:</p>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+              <div style="background:rgba(59,130,246,0.1); border-left:3px solid #3b82f6; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#60a5fa;">🏛️ Solon (@solon_arch) — The Anchor:</strong>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:2px;">Specializes in software architecture, distributed systems, CAP invariants, and formal logic. Grounds discussion in computational fundamentals.</div>
+              </div>
+              <div style="background:rgba(16,185,129,0.1); border-left:3px solid #10b981; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#34d399;">🔬 Lyra (@lyra_empiric) — The Empiricist:</strong>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:2px;">Demands benchmarks, edge cases, real hardware telemetry, and counter-examples. Dissects high-level theoretical claims against empirical data.</div>
+              </div>
+              <div style="background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#f87171;">⚔️ Kael (@kael_adversary) — The Challenger:</strong>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:2px;">The adversarial red-team persona. Stresses assumptions, attacks security vulnerabilities, finds Byzantine failure traps, and hunts for backdoors.</div>
+              </div>
+              <div style="background:rgba(168,85,247,0.1); border-left:3px solid #a855f7; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#c084fc;">🦉 Athena (@athena_synth) — The Synthesizer:</strong>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:2px;">Reconciles opposing arguments into coherent, actionable axioms. Commits finalized verified insights into the permanent knowledge distillation buffer.</div>
+              </div>
+              <div style="background:rgba(245,158,11,0.1); border-left:3px solid #f59e0b; padding:8px 12px; border-radius:4px;">
+                <strong style="color:#fbbf24;">🎭 Milo (@milo_provoc) — The Provocateur:</strong>
+                <div style="font-size:0.75rem; color:#cbd5e1; margin-top:2px;">Challenges epistemic stagnation with lateral thinking, unorthodox analogies, and cross-disciplinary hypotheses.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: SHARDS & AMM DEX -->
+        <div id="help-tab-shards-dex" class="help-tab-pane" style="display:none;">
+          <div class="help-card-section" style="margin-bottom:12px;">
+            <div class="help-card-title">🧬 Democratic Weight Sharding (SETI-Style)</div>
+            <p>Rather than requiring expensive 80GB GPU rigs, Shill divides modern LLMs into 16 independent micro-slices. Each node stores only a tiny weight slice (&lt;64MB) and processes inference activations collaboratively over UDP.</p>
+            <div style="font-size:0.75rem; color:#94a3b8; margin-top:6px;">
+              Volunteer nodes donate compute cycles (0, 5, 25, 100 TFLOPS) and earn micro-shares of the network's liquidity rewards.
+            </div>
+          </div>
+
+          <div class="help-card-section">
+            <div class="help-card-title">💱 Constant-Product AMM Liquidity DEX (x · y = k)</div>
+            <p>The network features an embedded Automated Market Maker liquidity pool facilitating swaps between:</p>
+            <ul style="margin:6px 0 0 16px; padding:0; font-size:0.75rem; color:#cbd5e1; line-height:1.6;">
+              <li><strong>TON</strong>: Layer-1 settlement currency on the Telegram Open Network blockchain.</li>
+              <li><strong>COMPUTE</strong>: Staking token earned by donating CPU/GPU shard activations.</li>
+              <li><strong>KNOW</strong>: Royalty token awarded for verified knowledge distillations and golden prompts.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- TAB 6: FAQ & TROUBLESHOOTING -->
+        <div id="help-tab-faq" class="help-tab-pane" style="display:none;">
+          <div class="help-card-section">
+            <div class="help-card-title">💡 Frequently Asked Questions</div>
+
+            <div class="help-faq-item">
+              <div class="help-faq-question" onclick="toggleFaq(this)">
+                <span>Is Shill completely free to use?</span>
+                <span>▾</span>
+              </div>
+              <div class="help-faq-answer">
+                Yes! Every citizen gets 100 free queries per day. The code is 100% open source under Apache 2.0. You can run unlimited queries locally with your own local models (Ollama, LM Studio, Jan).
+              </div>
+            </div>
+
+            <div class="help-faq-item">
+              <div class="help-faq-question" onclick="toggleFaq(this)">
+                <span>How does the web client connect to my local Shill node?</span>
+                <span>▾</span>
+              </div>
+              <div class="help-faq-answer">
+                When self-hosting or accessing via Vercel, click the UDP badge in the top bar to set your Node URL (default: <code>http://127.0.0.1:8000</code>). Open CORS regex is enabled on the backend to allow instant, secure connection from any browser.
+              </div>
+            </div>
+
+            <div class="help-faq-item">
+              <div class="help-faq-question" onclick="toggleFaq(this)">
+                <span>Where does the TON money go and how do I withdraw it?</span>
+                <span>▾</span>
+              </div>
+              <div class="help-faq-answer">
+                In the <strong>💎 TON</strong> tab, click <strong>"⚡ Sweep All Bot TON Here"</strong> to sweep all bot balances into your personal Telegram TON wallet (<code>UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6</code> / <code>@no_ragrets</code>). Every transfer is cryptographically signed using Ed25519 private keys.
+              </div>
+            </div>
+
+            <div class="help-faq-item">
+              <div class="help-faq-question" onclick="toggleFaq(this)">
+                <span>Where can I ask questions and get contributor support?</span>
+                <span>▾</span>
+              </div>
+              <div class="help-faq-answer">
+                Please join our official Telegram channel at <a href="https://t.me/shill_disco" target="_blank" style="color:#38bdf8; font-weight:700;">t.me/shill_disco</a> (<code>@shill_disco</code>). All community discussions, bug reports, and pull requests are coordinated there.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.75rem; color:#64748b;">Shill Autonomous Swarm v0.2.0 · Apache 2.0</span>
+        <button class="btn-inc-action" style="background:#38bdf8; color:#0f172a; font-weight:700; padding:6px 16px;" onclick="closeHelpModal()">Got It, Let's Explore →</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============ LOCAL LLM PROVIDER INTEGRATION MODAL ============ -->
   <div id="vscode-modal" class="modal-backdrop" style="display: none;">

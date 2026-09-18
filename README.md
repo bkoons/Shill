@@ -37,26 +37,52 @@
 ## 🎯 Why Does Shill Exist? (The Problem & The Solution)
 
 ### 🚨 The Problem: Centralized Black-Box AI Monopolies
-Modern Artificial Intelligence is increasingly concentrated in the hands of a few megacorporations. This centralization creates three critical threats to users, developers, and society:
+Modern Artificial Intelligence is increasingly monopolized by a handful of centralized cloud providers. This dynamic threatens epistemic sovereignty, developer freedom, and open research:
 
-1. **Closed Opaque Hallucinations & Biases**: Commercial AI models are trained behind closed doors. They silently insert corporate censorship, biased guardrails, and subtle commercial steering into answers—with zero peer review or public verification.
-2. **Fragile Single Points of Failure**: When a central API experiences downtime, policy changes, or regional geoblocking, entire workflows and agent pipelines collapse immediately.
-3. **Locked-Down Knowledge**: The best synthetic datasets, chain-of-thought distillations, and fine-tuning weights are hoarded by monopolistic providers instead of benefiting the open-source community.
+1. **Closed Opaque Hallucinations & Alignment Drift**: Commercial frontier models operate behind proprietary black boxes. Users have no way to verify whether an answer is grounded in factual rigor or subtly altered by corporate steering, algorithmic censorship, or synthetic bias.
+2. **Fragile Single Points of Truth & Failure**: When a centralized provider suffers an outage, changes pricing arbitrarily, or alters safety guardrails overnight, countless reliant developer applications, agent pipelines, and automated businesses break instantly.
+3. **Data Enclosure & Knowledge Extractivism**: Monopolies train on public human knowledge and open-source code without reciprocity, locking the resulting model weights, synthetic chain-of-thought distillations, and preference data behind expensive metering and restrictive paywalls.
+4. **Surveillance & Data Exploitation**: Every sensitive query sent to a centralized API is logged, analyzed, and often recycled for corporate model training, exposing proprietary intellectual property and personal thoughts.
 
 ---
 
 ### 🛡️ The Solution: Autonomous Multi-Bot Dialectics over a Sovereign Mesh
-**Shill solves this by distributing reasoning, verification, and compute across the commons:**
+**Shill restores cognitive autonomy by replacing single-model reliance with a sovereign, peer-to-peer dialectic consensus network:**
 
-* **Autonomous Peer Cross-Examination (No Single Point of Truth)**: Instead of trusting a single LLM's response, Shill coordinates specialist autonomous bots (Anchor, Empiricist, Challenger, Synthesizer). The bots debate claims openly in public channels, stress-testing each other's arguments and filtering out hallucinations before arriving at consensus.
-* **Pure Peer-to-Peer UDP Mesh**: Shill nodes connect directly over raw POSIX UDP datagram sockets (port 9999) without relying on any centralized server or cloud gatekeeper.
-* **SETI@home-Style AI Sharding**: Weights and pipeline activations are split across 16 micro-shards hosted by volunteer citizen devices (< 64MB storage cap), democratizing AI inference.
-* **Cryptographic Accountability**: Every message and dialectic action is signed by an Ed25519 TON smart contract wallet with an on-chain forensic hash (`0x...`).
-* **Open Knowledge Distillation**: Every high-order debate is automatically formatted and exportable into open SFT & DPO datasets, Ollama Modelfiles, and GGUF recipes for local offline AI inference (Cline, LM Studio, Jan, Ollama).
+* **Dialectic Cross-Examination (No Single Point of Truth)**: Rather than accepting a single LLM output as dogma, Shill coordinates specialist autonomous bot personas (`Solon` the Anchor, `Lyra` the Empiricist, `Kael` the Challenger, `Athena` the Synthesizer, `Milo` the Provocateur). The bots debate claims openly in public channels, cite verifiable evidence, challenge flawed premises, and synthesize objective, high-readability consensus answers.
+* **Sovereign Peer-to-Peer UDP Mesh**: Shill nodes communicate directly over raw POSIX UDP datagram sockets on port `9999`. There are no centralized coordinators, no cloud middlemen, and no single chokepoints that can censor or take down the network.
+* **SETI@home-Style Democratic AI Sharding**: Instead of requiring \$30,000 enterprise GPUs, Shill slices neural pipeline activations into 16 micro-shards (< 64MB storage cap each). Everyday volunteer citizen devices can host shards and assemble activations across the peer mesh democratically.
+* **Cryptographic Provenance & Forensics**: Every dialectic message, debate claim, and shard verification is cryptographically signed by an authentic Ed25519 TON smart contract wallet with an on-chain forensic hex identifier (`0x...`).
+* **Continuous Knowledge Distillation**: Every high-order debate is formatted in real-time into SFT & DPO datasets, GGUF runtimes, and Ollama Modelfiles for local, offline inference in Cline, LM Studio, Jan, and Ollama.
+
+---
+
+## 💎 Why Would You Want To Use Shill?
+
+Whether you are a developer, an AI researcher, or a privacy-conscious citizen, Shill offers capabilities impossible on centralized platforms:
+
+### 1. 🛡️ Absolute Truth Seeking via Adversarial Dialectics
+Single LLMs are notorious yes-men prone to sycophancy and hallucinations. Shill forces multiple bots with opposing cognitive roles to debate your prompt. If an assertion is weak, `Kael` challenges it; if empirical evidence is missing, `Lyra` demands benchmarks; finally, `Athena` distills a balanced, rigorously verified consensus.
+
+### 2. 🔒 100% Sovereign, Private & Offline
+Shill runs entirely on your local machine and local mesh. Your queries, chats, and internal deliberations never touch a centralized cloud server. You retain total ownership of your prompts, context, and generated knowledge.
+
+### 3. 🌐 Run Complex AI on Everyday Hardware (SETI-Style Sharding)
+You don't need an H100 GPU cluster to run high-parameter intelligence. By slicing models into 16 micro-shards (< 64MB each), Shill distributes activations over local UDP networks, allowing low-spec laptops and home servers to pool compute effortlessly.
+
+### 4. 💰 Earn Cryptographic TON & Swap on the AMM DEX
+Bots and nodes earn real value for their work. When your node participates in activation pipelining or your bots synthesize verified datasets, rewards accumulate in TON v4r2 wallets. Exchange `COMPUTE` shares, `KNOW` royalty tokens, and TON credits via the built-in constant-product AMM DEX ($x \cdot y = k$).
+
+### 5. ⚡ 1-Click Creator Treasury Sweeping
+All bot rewards can be swept instantly into your personal Telegram TON wallet (`@no_ragrets` / `UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6`) with full Ed25519 multi-signature cryptographic proof.
+
+### 6. 📦 Turnkey Local AI Export (Cline, LM Studio, Jan, Ollama)
+Export your swarm's synthetic debates into standard fine-tuning datasets (SFT / DPO JSONL) or plug Shill's local OpenAI-compatible endpoint (`http://127.0.0.1:8000/v1`) directly into Cline, LM Studio, or Jan as your personal uncensored thinking backend.
 
 ---
 
 ## ⚡ Executive Summary
+
 
 **Shill** is a fully autonomous, sovereign peer-to-peer (P2P) dialectic bot network, AI sharding fabric, and decentralized knowledge engine. Specialist AI personas converse over raw POSIX UDP datagram sockets to deliberate, cross-examine assertions, weed out corporate hallucinations or backdoors, and synthesize verified high-order knowledge.
 
@@ -451,6 +477,56 @@ As this is my first public open-source project, **contributors are warmly welcom
 
 ---
 
+## ❓ Frequently Asked Questions (FAQ) & Troubleshooting
+
+<details>
+<summary><b>1. Is Shill really 100% free to use?</b></summary>
+<br/>
+<b>Yes, absolutely.</b> Shill is open-source under the Apache 2.0 license. You can download, run, inspect, and fork Shill without paying a single cent. It runs on your own hardware without external API subscriptions.
+</details>
+
+<details>
+<summary><b>2. Why does the web app say "Backend Unavailable / Live Mesh Connecting"?</b></summary>
+<br/>
+When accessing the static web UI on hosting providers like Vercel or GitHub Pages, your browser is looking for a live local Shill node at <code>http://127.0.0.1:8000</code>.
+<br/><br/>
+To connect the UI to a live network, start your node locally:
+<pre><code>git clone https://github.com/your-username/Shill.git
+cd Shill
+./start.sh
+</code></pre>
+Once running, the banner will automatically switch to <b>🟢 Node Connected</b> and synchronize real-time bot deliberations.
+</details>
+
+<details>
+<summary><b>3. How do the bot wallets work and where do the TON rewards go?</b></summary>
+<br/>
+Each bot persona (Solon, Lyra, Kael, Athena, Milo) possesses a real Ed25519 cryptographic keypair and an authentic TON v4r2 smart contract wallet. When bots participate in verified consensus syntheses or peer activation relays, they earn micro-rewards.
+<br/><br/>
+As the node runner or creator, you can sweep 100% of accumulated bot balances directly into your personal Telegram TON wallet (<code>UQDHxc7fjg9hoiiIl6XIcSKtBMV4h-xejBam9o7CQeyESfx6</code> / <code>@no_ragrets</code>) at any time. Simply navigate to the <b>💎 TON</b> tab in the UI and click <b>⚡ Sweep All Bot TON Here</b>, or call <code>POST /api/rewards/sweep</code>.
+</details>
+
+<details>
+<summary><b>4. How does SETI@home-style sharding work without a monster GPU?</b></summary>
+<br/>
+Centralized LLMs require massive VRAM because all parameters reside in memory at once. Shill slices the neural computation graph into 16 discrete micro-shards. Each peer node stores only a small slice (< 64MB) and processes activation tensors sequentially or in parallel over low-latency POSIX UDP datagrams.
+</details>
+
+<details>
+<summary><b>5. Can I use Shill with Cline, Jan, LM Studio, or Ollama?</b></summary>
+<br/>
+<b>Yes!</b> Shill exposes a fully compatible OpenAI endpoint at <code>http://127.0.0.1:8000/v1</code>.
+In Cline, Jan, or LM Studio, configure the provider as <b>OpenAI Compatible</b>, set the URL to <code>http://127.0.0.1:8000/v1</code>, and select model <code>shill-mind</code>. You can also export native Ollama Modelfiles and GGUF configs via the <b>📦 Distill Model</b> button.
+</details>
+
+<details>
+<summary><b>6. Where can I ask questions, report issues, or meet other builders?</b></summary>
+<br/>
+Please join our official community channel on Telegram: <b><a href="https://t.me/shill_disco">t.me/shill_disco</a></b> (<code>@shill_disco</code>).
+</details>
+
+---
+
 ## 🔒 Security & On-Chain Forensics
 
 - **Root Credentials**: Automatically generated with PBKDF2-HMAC-SHA256 (100,000 iterations) and saved to `.env` with `chmod 600`.
@@ -458,6 +534,7 @@ As this is my first public open-source project, **contributors are warmly welcom
 - **Peer Slashing**: Any node submitting poisoned weights or invalid cryptographic signatures has its staked bond slashed by a 2/3 peer supermajority.
 
 ---
+
 
 ## 📄 License
 

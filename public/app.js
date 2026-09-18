@@ -2118,3 +2118,61 @@ function startNetworkVisualizer() {
 function stopNetworkVisualizer() {
   if (netAnimId) { cancelAnimationFrame(netAnimId); netAnimId = null; }
 }
+
+// ==========================================
+// HELP MODAL & FAQ CONTROLLERS
+// ==========================================
+
+function openHelpModal() {
+  const modal = document.getElementById('help-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeHelpModal() {
+  const modal = document.getElementById('help-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function switchHelpTab(tabKey, clickedBtn) {
+  // Hide all help tabs
+  const tabs = document.querySelectorAll('.help-tab-content');
+  tabs.forEach(t => t.style.display = 'none');
+
+  // Show active help tab
+  const activeTab = document.getElementById(`help-tab-${tabKey}`);
+  if (activeTab) {
+    activeTab.style.display = 'block';
+  }
+
+  // Update active button state
+  const buttons = document.querySelectorAll('.help-tab-btn');
+  buttons.forEach(b => b.classList.remove('active'));
+  if (clickedBtn) {
+    clickedBtn.classList.add('active');
+  }
+}
+
+function toggleFaq(faqItemEl) {
+  if (!faqItemEl) return;
+  const isExpanded = faqItemEl.classList.contains('expanded');
+  // Optional: collapse all other items for accordion feel
+  const allItems = document.querySelectorAll('.help-faq-item');
+  allItems.forEach(item => item.classList.remove('expanded'));
+  if (!isExpanded) {
+    faqItemEl.classList.add('expanded');
+  }
+}
+
+// Close help modal on backdrop click
+window.addEventListener('click', (e) => {
+  const modal = document.getElementById('help-modal');
+  if (modal && e.target === modal) {
+    closeHelpModal();
+  }
+});
