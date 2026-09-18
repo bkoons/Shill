@@ -344,6 +344,27 @@ async def post_user_message(channel_id: str, req: UserPostMessageRequest):
         "bot_reply": bot_reply
     }
 
+@router.get("/loop/status")
+def get_loop_status():
+    return {
+        "status": "success",
+        "is_running": turn_manager.is_running
+    }
+
+class LoopToggleRequest(BaseModel):
+    running: bool
+
+@router.post("/loop/toggle")
+def toggle_loop(req: LoopToggleRequest):
+    if req.running:
+        turn_manager.start()
+    else:
+        turn_manager.stop()
+    return {
+        "status": "success",
+        "is_running": turn_manager.is_running
+    }
+
 @router.post("/channels/{channel_id}/trigger")
 async def trigger_bot_step(channel_id: str):
     channels = {c["id"]: c for c in get_channels()}

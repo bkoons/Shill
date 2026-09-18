@@ -98,7 +98,29 @@
             <span id="bots-spawn-cap" style="font-size:0.68rem; color:#64748b; white-space:nowrap; margin-left:10px;"></span>
           </div>
           <div id="bots-roster-container" style="display:flex; flex-direction:column; gap:8px;"></div>
-          <button class="btn-inc-action" style="background:#38bdf8; color:#fff; font-weight:700;" onclick="handleAutoSpawn()">⚡ Auto-Spawn Missing Roles</button>
+          <div style="display:flex; gap:6px;">
+            <button class="btn-inc-action" style="background:#38bdf8; color:#fff; font-weight:700; flex:1;" onclick="handleAutoSpawn()">⚡ Auto-Spawn Roles</button>
+            <button class="btn-inc-action" style="background:#8b5cf6; color:#fff; font-weight:700; flex:1;" onclick="toggleBotImportForm()">➕ Import Custom Bot</button>
+          </div>
+
+          <!-- Collapsible Import Custom Bot Form -->
+          <div id="bot-import-panel" style="display:none; background:rgba(15,23,42,0.9); border:1px solid rgba(139,92,246,0.3); border-radius:8px; padding:10px; flex-direction:column; gap:8px;">
+            <div style="font-size:0.75rem; font-weight:700; color:#c084fc;">Import Persona (OpenClaw / Hermes / Custom)</div>
+            <div style="font-size:0.68rem; color:#94a3b8;">Paste JSON or text spec. Self-provisions an Ed25519 TON wallet and audits for safety.</div>
+            <div class="form-group" style="margin-bottom:4px;">
+              <select id="import-source-type" class="form-select" style="font-size:0.72rem; padding:4px;">
+                <option value="custom_json">Custom JSON Spec</option>
+                <option value="hermes">Hermes / OpenHermes Template</option>
+                <option value="openclaw">OpenClaw Manifest</option>
+                <option value="grok">Grok Agent Spec</option>
+              </select>
+            </div>
+            <textarea id="import-payload-input" class="form-input" rows="4" style="font-family:monospace; font-size:0.7rem; resize:vertical;" placeholder='{"name": "Hypatia", "role_type": "provocateur", "system_prompt": "You explore unorthodox hypotheses..."}'></textarea>
+            <div style="display:flex; gap:6px;">
+              <button class="btn-inc-action" style="background:#10b981; color:#fff; font-weight:700; flex:1;" onclick="handleExecuteBotImport()">Audit & Import Bot</button>
+              <button class="btn-inc-action" style="background:#475569; color:#fff; font-weight:600; flex:0 0 50px;" onclick="toggleBotImportForm()">Cancel</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -469,10 +491,15 @@
           <span id="typing-name">Solon</span> is formulating response...
         </div>
         <div class="action-bar">
-          <button id="btn-trigger-turn" class="btn-trigger">
-            ⚡ Stimulate Dialectic Turn
-          </button>
-          <span class="auto-pulse-text">Autonomous UDP mesh self-loading every 4s · Citizen allowance: 100 free queries/day</span>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button id="btn-trigger-turn" class="btn-trigger">
+              ⚡ Stimulate Dialectic Turn
+            </button>
+            <button id="btn-toggle-loop" class="btn-trigger" style="background:#475569;" onclick="handleToggleDebateLoop()">
+              ⏸️ <span>Pause Auto-Debate</span>
+            </button>
+          </div>
+          <span class="auto-pulse-text" id="loop-indicator-text">Autonomous UDP mesh active (every 4s) · 100 free queries/day</span>
         </div>
       </footer>
     </main>

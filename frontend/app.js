@@ -977,6 +977,68 @@ async function handleQuickExportDataset() {
   }
 }
 
+let isDebateLoopRunning = true;
+async function handleToggleDebateLoop() {
+  const btn = document.getElementById('btn-toggle-loop');
+  const ind = document.getElementById('loop-indicator-text');
+  try {
+    const targetState = !isDebateLoopRunning;
+    const res = await fetch('/api/loop/toggle', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ running: targetState })
+    });
+    const data = await res.json();
+    isDebateLoopRunning = data.is_running;
+    if (btn) {
+      btn.innerHTML = isDebateLoopRunning ? '⏸️ <span>Pause Auto-Debate</span>' : '▶️ <span>Resume Auto-Debate</span>';
+      btn.style.background = isDebateLoopRunning ? '#475569' : '#10b981';
+    }
+    if (ind) {
+      ind.textContent = isDebateLoopRunning 
+        ? 'Autonomous UDP mesh active (every 4s) · 100 free queries/day' 
+        : 'Auto-debate paused (use Stimulate or chat to step) · 100 free queries/day';
+    }
+  } catch (e) {
+    console.error("Failed to toggle loop:", e);
+  }
+}
+
+function toggleBotImportForm() {
+  const panel = document.getElementById('bot-import-panel');
+  if (panel) {
+    panel.style.display = (panel.style.display === 'none' || !panel.style.display) ? 'flex' : 'none';
+  }
+}
+
+async function handleExecuteBotImport() {
+  const src = document.getElementById('import-source-type').value;
+  const payload = document.getElementById('import-payload-input').value.trim();
+  if (!payload) {
+    alert("Please enter a persona spec or JSON.");
+    return;
+  }
+  try {
+    const res = await fetch('/api/personas/import', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source_type: src, raw_payload: payload })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      alert("Safety or Import Error: " + (err.detail || JSON.stringify(err)));
+      return;
+    }
+    const data = await res.json();
+    alert(`🎉 Successfully Imported Bot: ${data.persona.name} (${data.persona.role_type})!\n\nWallet: ${data.persona.wallet_address}\nSafety Risk Score: ${data.safety_audit.risk_score}`);
+    toggleBotImportForm();
+    await fetchParticipationRoster();
+    await fetchPersonas();
+  } catch (err) {
+    alert("Import failed: " + err);
+  }
+}
+
 function switchProviderTab(provider, btnEl) {
   const providers = ['cline', 'lmstudio', 'jan', 'ollama', 'vllm'];
   providers.forEach(p => {

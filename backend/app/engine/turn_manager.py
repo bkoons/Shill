@@ -412,6 +412,10 @@ class TurnManager:
 
             await asyncio.sleep(4.0)
 
+    @property
+    def is_running(self) -> bool:
+        return self._is_running
+
     def start(self):
         if not self._is_running:
             self._is_running = True
