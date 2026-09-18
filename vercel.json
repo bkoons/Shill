@@ -1,12 +1,18 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "cp -r frontend backend/ && cp -r public/* backend/ 2>/dev/null || true",
-  "outputDirectory": "backend",
+  "buildCommand": "cp -r frontend api/ && cp -r public/* api/ 2>/dev/null || true",
+  "outputDirectory": "api",
   "cleanUrls": true,
   "functions": {
-    "backend/main.py": {
+    "api/index.py": {
       "maxDuration": 30
     }
-  }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.py"
+    }
+  ]
 }
