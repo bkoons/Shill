@@ -248,6 +248,9 @@ class UDPPeerMesh(asyncio.DatagramProtocol):
         }
 
     def error_received(self, exc: Exception):
+        # Ignore benign Operation not permitted (EPERM) when kernel blocks 255.255.255.255 broadcast
+        if isinstance(exc, OSError) and exc.errno in (1, 13):
+            return
         _log.info(f"[UDPPeerMesh] Socket error received: {exc}")
 
     def add_listener(self, callback: Callable[[Dict[str, Any], tuple], Any]):
@@ -260,9 +263,13 @@ class UDPPeerMesh(asyncio.DatagramProtocol):
         payload_bytes = seal(packet)
         try:
             self.transport.sendto(payload_bytes, (dest_host, dest_port))
-        except Exception as e:
-            # Ignore network transient unreachable
-            pass
+        except OSError as e:
+            # Benign EPERM/EACCES when global broadcast is restricted by host OS/firewall
+            if e.errno not in (1, 13):
+                _log.debug(f"[UDPPeerMesh] sendto error {dest_host}:{dest_port}: {e}")
+            return
+        except Exception:
+            return
 
         if self.admin_audit_callback:
             self.admin_audit_callback({
@@ -281,8 +288,14 @@ class UDPPeerMesh(asyncio.DatagramProtocol):
         if not self.transport:
             return
         
-        # Subnet broadcast targets
-        broadcast_targets = [("255.255.255.255", self.port), ("127.0.0.1", self.port)]
+        # Subnet broadcast targets: loopback + directed local broadcasts
+        broadcast_targets = [("127.0.0.1", self.port)]
+        # Try global broadcast safely
+        try:
+            broadcast_targets.append(("255.255.255.255", self.port))
+        except Exception:
+            pass
+
         for b_host, b_port in broadcast_targets:
             self.send_packet(packet, dest_host=b_host, dest_port=b_port)
 
